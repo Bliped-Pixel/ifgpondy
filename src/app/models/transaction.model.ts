@@ -44,3 +44,17 @@ export interface TransactionResult<T> {
   data?: T;
   message: string;
 }
+
+export type VoucherType = 'receipt' | 'payment' | 'contra';
+
+export interface VoucherEntry {
+  id: string;
+  voucherNumber: string;
+  voucherType: VoucherType;
+  partyName: string;
+  ledgerName: string;
+  amount: number;
+  paymentMode: 'cash' | 'bank' | 'upi' | 'cheque';
+  voucherDate: Date;
+  note?: string;
+}

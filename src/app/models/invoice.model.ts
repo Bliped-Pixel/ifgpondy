@@ -16,6 +16,7 @@ export interface InvoiceItem {
 export interface Invoice {
   id: string;
   invoiceNumber: string;
+  billType: 'cash' | 'credit';
   customerName: string;
   customerEmail?: string;
   customerPhone?: string;

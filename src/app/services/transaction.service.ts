@@ -4,7 +4,9 @@ import {
   PurchaseEntry,
   SalesEntry,
   TransactionItem,
-  TransactionResult
+  TransactionResult,
+  VoucherEntry,
+  VoucherType
 } from '../models/transaction.model';
 
 @Injectable({
@@ -13,11 +15,14 @@ import {
 export class TransactionService {
   private salesEntries = signal<SalesEntry[]>([]);
   private purchaseEntries = signal<PurchaseEntry[]>([]);
+  private voucherEntries = signal<VoucherEntry[]>([]);
   private salesCounter = signal(1000);
   private purchaseCounter = signal(2000);
+  private voucherCounter = signal(3000);
 
   salesEntries$ = this.salesEntries.asReadonly();
   purchaseEntries$ = this.purchaseEntries.asReadonly();
+  voucherEntries$ = this.voucherEntries.asReadonly();
 
   constructor(private inventoryService: InventoryService) {}
 
@@ -126,5 +131,54 @@ export class TransactionService {
     const current = this.purchaseCounter();
     this.purchaseCounter.set(current + 1);
     return `PE-${new Date().getFullYear()}-${current}`;
+  }
+
+  createVoucherEntry(
+    voucherType: VoucherType,
+    partyName: string,
+    ledgerName: string,
+    amount: number,
+    paymentMode: 'cash' | 'bank' | 'upi' | 'cheque',
+    note?: string,
+    voucherDate: Date = new Date()
+  ): TransactionResult<VoucherEntry> {
+    if (!partyName.trim()) {
+      return { success: false, message: 'Party name is required.' };
+    }
+
+    if (!ledgerName.trim()) {
+      return { success: false, message: 'Ledger name is required.' };
+    }
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+      return { success: false, message: 'Amount must be greater than zero.' };
+    }
+
+    const entry: VoucherEntry = {
+      id: Date.now().toString(),
+      voucherNumber: this.generateVoucherNumber(voucherType),
+      voucherType,
+      partyName,
+      ledgerName,
+      amount,
+      paymentMode,
+      voucherDate,
+      note
+    };
+
+    this.voucherEntries.set([entry, ...this.voucherEntries()]);
+    return { success: true, data: entry, message: 'Voucher entry saved.' };
+  }
+
+  getVoucherEntriesByType(voucherType: VoucherType): VoucherEntry[] {
+    return this.voucherEntries().filter(entry => entry.voucherType === voucherType);
+  }
+
+  private generateVoucherNumber(voucherType: VoucherType): string {
+    const current = this.voucherCounter();
+    this.voucherCounter.set(current + 1);
+
+    const prefix = voucherType === 'receipt' ? 'RV' : voucherType === 'payment' ? 'PV' : 'CV';
+    return `${prefix}-${new Date().getFullYear()}-${current}`;
   }
 }
