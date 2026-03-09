@@ -363,6 +363,41 @@
   gap: 15px;
 }
 
+.access-bill-header {
+  border: 2px solid #1b1b1b;
+  border-radius: 6px;
+  padding: 12px;
+  text-align: center;
+  background: #fff;
+}
+
+.bill-meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.access-bill-header h4 {
+  margin: 8px 0 4px;
+  text-decoration: underline;
+}
+
+.access-bill-header h2 {
+  margin: 0 0 4px;
+  letter-spacing: 1px;
+  font-size: 30px;
+}
+
+.access-bill-header p {
+  margin: 0 0 4px;
+  font-size: 13px;
+}
+
+.dealer-line {
+  font-style: italic;
+}
+
 .detail-row {
   padding: 10px;
   background: #f9f9f9;

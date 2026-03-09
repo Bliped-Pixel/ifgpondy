@@ -21,3 +21,44 @@ export interface MigrationDomain {
   sourceObjects: string[];
   status: 'planned' | 'in-progress' | 'completed';
 }
+
+export interface AccessTableField {
+  name: string;
+  type: number;
+  size: number;
+  required: boolean;
+  allowZeroLength: boolean;
+}
+
+export interface AccessTableDefinition {
+  table: string;
+  fields: AccessTableField[];
+}
+
+export interface AccessObjectName {
+  name: string;
+}
+
+export interface AccessSummary {
+  database: string;
+  extractedAt: string;
+  tableCount: number;
+  queryCount: number;
+  formCount: number;
+  reportCount: number;
+  macroCount: number;
+  moduleCount: number;
+  tables: AccessTableDefinition[];
+  queries: AccessObjectName[];
+  forms: AccessObjectName[];
+  reports: AccessObjectName[];
+  modules: AccessObjectName[];
+}
+
+export interface AccessCommandAction {
+  id: string;
+  label: string;
+  legacyForm: string;
+  route?: string;
+  description: string;
+}

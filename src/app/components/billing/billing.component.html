@@ -38,6 +38,13 @@
             <input type="text" [(ngModel)]="customerName" placeholder="Enter customer name" />
           </div>
           <div class="form-group">
+            <label>Bill Type</label>
+            <select [(ngModel)]="billType">
+              <option value="cash">Cash Bill</option>
+              <option value="credit">Credit Bill</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label>Email</label>
             <input type="email" [(ngModel)]="customerEmail" placeholder="customer@example.com" />
           </div>
@@ -196,8 +203,23 @@
 
       <div class="modal-body">
         <div class="invoice-details">
+          <div class="access-bill-header">
+            <div class="bill-meta-row">
+              <strong>GSTIN : 34ADYPA0680K1ZB</strong>
+              <strong>Since : 1990</strong>
+            </div>
+            <h4>{{ selectedInvoice.billType === 'credit' ? 'CREDIT BILL' : 'CASH BILL' }}</h4>
+            <h2>INDO FRENCH GRANITES</h2>
+            <p>No.220/3H, Krishna Nagar Main Road, Lawspet, Puducherry - 605 008</p>
+            <p>Shop: 0413-2255225, Cell: +91-94434 59929 | 94433 83039, E-mail: ifgpondy@gmail.com</p>
+            <p class="dealer-line">(Dealers of: Cuddapah, Marbles, Granites, Natural Stones in Slabs & Tiles)</p>
+          </div>
+
           <div class="detail-row">
             <strong>Customer:</strong> {{ selectedInvoice.customerName }}
+          </div>
+          <div class="detail-row">
+            <strong>Bill Type:</strong> {{ selectedInvoice.billType | uppercase }}
           </div>
           <div class="detail-row" *ngIf="selectedInvoice.customerPhone">
             <strong>Phone:</strong> {{ selectedInvoice.customerPhone }}
@@ -278,6 +300,7 @@
         <thead>
           <tr>
             <th>Invoice #</th>
+            <th>Bill Type</th>
             <th>Customer</th>
             <th>Date</th>
             <th>Amount</th>
@@ -290,6 +313,7 @@
         <tbody>
           <tr *ngFor="let invoice of invoices$()">
             <td>{{ invoice.invoiceNumber }}</td>
+            <td>{{ invoice.billType | uppercase }}</td>
             <td>{{ invoice.customerName }}</td>
             <td>{{ invoice.invoiceDate | date: 'short' }}</td>
             <td>₹{{ invoice.subtotal.toFixed(2) }}</td>

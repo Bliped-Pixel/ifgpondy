@@ -18,6 +18,9 @@ import { CommonModule } from '@angular/common';
           <li><a routerLink="/billing" routerLinkActive="active">Billing</a></li>
           <li><a routerLink="/sales" routerLinkActive="active">Sales</a></li>
           <li><a routerLink="/purchase" routerLinkActive="active">Purchase</a></li>
+          <li><a routerLink="/vouchers" routerLinkActive="active">Vouchers</a></li>
+          <li><a routerLink="/accounts" routerLinkActive="active">Accounts</a></li>
+          <li><a routerLink="/accounts-reports" routerLinkActive="active">Reports</a></li>
           <li><a routerLink="/catalog" routerLinkActive="active">Catalog</a></li>
           <li><a routerLink="/legacy-rebuild" routerLinkActive="active">Access Rebuild</a></li>
         </ul>

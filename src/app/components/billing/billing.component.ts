@@ -22,6 +22,7 @@ export class BillingComponent {
   customerEmail = '';
   customerPhone = '';
   customerGST = '';
+  billType: 'cash' | 'credit' = 'cash';
   discount = 0;
   notes = '';
 
@@ -116,7 +117,8 @@ export class BillingComponent {
       this.customerName,
       this.invoiceItems,
       this.discount,
-      this.notes
+      this.notes,
+      this.billType
     );
 
     // Keep customer info
@@ -133,6 +135,7 @@ export class BillingComponent {
     this.customerEmail = '';
     this.customerPhone = '';
     this.customerGST = '';
+    this.billType = 'cash';
     this.invoiceItems = [];
     this.discount = 0;
     this.notes = '';
@@ -149,14 +152,22 @@ export class BillingComponent {
   }
 
   printInvoice(invoice: Invoice): void {
-    const text = this.billingService.exportInvoiceAsText(invoice);
-    const blob = new Blob([text], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${invoice.invoiceNumber}.txt`;
-    link.click();
-    window.URL.revokeObjectURL(url);
+    const html = this.billingService.exportInvoiceAsHtml(invoice);
+    const printWindow = window.open('', '_blank', 'width=1100,height=800');
+
+    if (!printWindow) {
+      alert('Popup blocked. Please allow popups to print the invoice.');
+      return;
+    }
+
+    printWindow.document.open();
+    printWindow.document.write(html);
+    printWindow.document.close();
+    printWindow.focus();
+
+    setTimeout(() => {
+      printWindow.print();
+    }, 200);
   }
 
   updatePaymentStatus(invoiceId: string): void {
