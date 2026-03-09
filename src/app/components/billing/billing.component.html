@@ -1,0 +1,323 @@
+<div class="container">
+  <div class="header">
+    <h2>Billing & GST Management</h2>
+    <button (click)="showInvoiceForm = !showInvoiceForm" class="btn btn-primary">
+      {{ showInvoiceForm ? '✕ Close Form' : '+ Create Invoice' }}
+    </button>
+  </div>
+
+  <!-- Statistics -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h4>Total Revenue</h4>
+      <p class="stat-value">₹{{ getTotalRevenue().toFixed(2) }}</p>
+    </div>
+    <div class="stat-card">
+      <h4>Pending Invoices</h4>
+      <p class="stat-value">{{ getPendingInvoices().length }}</p>
+    </div>
+    <div class="stat-card">
+      <h4>Total Invoices</h4>
+      <p class="stat-value">{{ (invoices$() | slice: 0).length }}</p>
+    </div>
+  </div>
+
+  <!-- Invoice Creation Form -->
+  <div *ngIf="showInvoiceForm" class="form-section">
+    <div class="form-header">
+      <h3>Create New Invoice</h3>
+    </div>
+
+    <div class="form-container">
+      <!-- Customer Details -->
+      <div class="section">
+        <h4>Customer Details</h4>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Customer Name *</label>
+            <input type="text" [(ngModel)]="customerName" placeholder="Enter customer name" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" [(ngModel)]="customerEmail" placeholder="customer@example.com" />
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" [(ngModel)]="customerPhone" placeholder="Phone number" />
+          </div>
+          <div class="form-group">
+            <label>GST Number</label>
+            <input type="text" [(ngModel)]="customerGST" placeholder="GST No (optional)" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Items -->
+      <div class="section">
+        <h4>Add Items to Invoice</h4>
+        <div class="item-input">
+          <select [(ngModel)]="selectedStone" (ngModelChange)="onStoneSelectionChange()" class="form-control">
+            <option value="">Select Stone</option>
+            <option *ngFor="let stone of availableStones" value="{{ stone.id }}">
+              {{ stone.name }} - {{ stone.type }} (₹{{ stone.pricePerUnit }}/sq-ft)
+            </option>
+          </select>
+
+          <select [(ngModel)]="selectedSizeId" (ngModelChange)="onSizeOrQuantityChange()" class="form-control" [disabled]="!selectedStone">
+            <option value="">Select Size</option>
+            <option *ngFor="let size of getSizesForSelectedStone()" value="{{ size.id }}">
+              {{ size.dimension }}
+            </option>
+          </select>
+
+          <input type="number" [(ngModel)]="selectedQuantity" (ngModelChange)="onSizeOrQuantityChange()" placeholder="Qty" min="1" />
+
+          <button (click)="addItemToInvoice()" class="btn btn-success" [disabled]="!!itemAvailability && !itemAvailability.canDeliver">
+            Add Item
+          </button>
+        </div>
+
+        <div *ngIf="itemAvailability" class="availability-box">
+          <p>
+            <strong>Status:</strong>
+            <span *ngIf="itemAvailability.canDeliver">✅ Deliverable</span>
+            <span *ngIf="!itemAvailability.canDeliver">❌ Not deliverable</span>
+          </p>
+          <p><strong>Direct stock:</strong> {{ itemAvailability.directAvailable }} pieces</p>
+          <p><strong>Total possible (with cutting):</strong> {{ itemAvailability.totalPossible }} pieces</p>
+          <p *ngIf="!itemAvailability.canDeliver"><strong>Shortage:</strong> {{ itemAvailability.shortage }} pieces</p>
+
+          <div *ngIf="itemAvailability.suggestions.length > 0" class="availability-suggestions">
+            <strong>Cutting suggestions:</strong>
+            <ul>
+              <li *ngFor="let suggestion of itemAvailability.suggestions">
+                {{ suggestion.sourceSize }}: cut {{ suggestion.suggestedToCut }} of {{ suggestion.sourceCount }} available
+                ({{ suggestion.piecesPerSource }} piece(s) each)
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Invoice Items -->
+        <div *ngIf="invoiceItems.length > 0" class="items-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Stone Name</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Quantity</th>
+                <th>Sq-Ft</th>
+                <th>Rate / Sq-Ft</th>
+                <th>Amount</th>
+                <th>GST</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of invoiceItems">
+                <td>{{ item.stoneName }}</td>
+                <td>{{ item.stoneType }}</td>
+                <td>{{ item.size }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.squareFeet.toFixed(2) }}</td>
+                <td>₹{{ item.pricePerUnit }}</td>
+                <td>₹{{ item.totalAmount.toFixed(2) }}</td>
+                <td>₹{{ item.gstAmount.toFixed(2) }} ({{ item.gstPercentage }}%)</td>
+                <td>
+                  <button
+                    (click)="removeItem(item.id)"
+                    class="btn btn-sm btn-danger"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- GST & Totals -->
+      <div class="section">
+        <h4>GST & Discount</h4>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Discount (%)</label>
+            <input type="number" [(ngModel)]="discount" min="0" max="100" />
+          </div>
+        </div>
+
+        <div class="totals">
+          <div class="total-row">
+            <span>Subtotal:</span>
+            <span>₹{{ calculateSubtotal().toFixed(2) }}</span>
+          </div>
+          <div class="total-row" *ngIf="discount > 0">
+            <span>Discount ({{ discount }}%):</span>
+            <span>-₹{{ ((calculateSubtotal() * discount) / 100).toFixed(2) }}</span>
+          </div>
+          <div class="total-row">
+            <span>GST (auto {{ calculateEffectiveGSTPercentage().toFixed(2) }}%):</span>
+            <span>₹{{ calculateGST().toFixed(2) }}</span>
+          </div>
+          <div class="total-row highlight">
+            <span>Total:</span>
+            <span>₹{{ calculateTotal().toFixed(2) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="section">
+        <div class="form-group">
+          <label>Additional Notes</label>
+          <textarea [(ngModel)]="notes" placeholder="Any additional notes..."></textarea>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button (click)="createInvoice()" class="btn btn-success" [disabled]="invoiceItems.length === 0">
+          Create Invoice
+        </button>
+        <button (click)="resetForm()" class="btn btn-secondary">Reset Form</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Invoice Details Modal -->
+  <div *ngIf="showInvoiceDetails && selectedInvoice" class="modal-overlay" (click)="closeInvoiceDetails()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Invoice #{{ selectedInvoice.invoiceNumber }}</h3>
+        <button (click)="closeInvoiceDetails()" class="btn-close">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="invoice-details">
+          <div class="detail-row">
+            <strong>Customer:</strong> {{ selectedInvoice.customerName }}
+          </div>
+          <div class="detail-row" *ngIf="selectedInvoice.customerPhone">
+            <strong>Phone:</strong> {{ selectedInvoice.customerPhone }}
+          </div>
+          <div class="detail-row" *ngIf="selectedInvoice.customerGST">
+            <strong>GST No:</strong> {{ selectedInvoice.customerGST }}
+          </div>
+          <div class="detail-row">
+            <strong>Date:</strong> {{ selectedInvoice.invoiceDate | date: 'short' }}
+          </div>
+
+          <div class="invoice-items">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Type</th>
+                  <th>Size</th>
+                  <th>Qty</th>
+                  <th>Sq-Ft</th>
+                  <th>Rate</th>
+                  <th>Amount</th>
+                  <th>GST</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of selectedInvoice.items">
+                  <td>{{ item.stoneName }}</td>
+                  <td>{{ item.stoneType }}</td>
+                  <td>{{ item.size }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.squareFeet.toFixed(2) }}</td>
+                  <td>₹{{ item.pricePerUnit }}</td>
+                  <td>₹{{ item.totalAmount.toFixed(2) }}</td>
+                  <td>₹{{ item.gstAmount.toFixed(2) }} ({{ item.gstPercentage }}%)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="totals">
+            <div class="total-row">
+              <span>Subtotal:</span>
+              <span>₹{{ selectedInvoice.subtotal.toFixed(2) }}</span>
+            </div>
+            <div class="total-row" *ngIf="selectedInvoice.discount">
+              <span>Discount ({{ selectedInvoice.discount }}%):</span>
+              <span>-₹{{ ((selectedInvoice.subtotal * selectedInvoice.discount) / 100).toFixed(2) }}</span>
+            </div>
+            <div class="total-row">
+              <span>GST (auto {{ selectedInvoice.gstPercentage.toFixed(2) }}%):</span>
+              <span>₹{{ selectedInvoice.gstAmount.toFixed(2) }}</span>
+            </div>
+            <div class="total-row highlight">
+              <span>Total Amount:</span>
+              <span>₹{{ selectedInvoice.total.toFixed(2) }}</span>
+            </div>
+          </div>
+
+          <div *ngIf="selectedInvoice.notes" class="notes">
+            <strong>Notes:</strong> {{ selectedInvoice.notes }}
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button (click)="printInvoice(selectedInvoice)" class="btn btn-info">🖨️ Print</button>
+        <button (click)="closeInvoiceDetails()" class="btn btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Invoices List -->
+  <div class="invoices-section">
+    <h3>Recent Invoices</h3>
+    <div class="invoices-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Invoice #</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>GST</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let invoice of invoices$()">
+            <td>{{ invoice.invoiceNumber }}</td>
+            <td>{{ invoice.customerName }}</td>
+            <td>{{ invoice.invoiceDate | date: 'short' }}</td>
+            <td>₹{{ invoice.subtotal.toFixed(2) }}</td>
+            <td>₹{{ invoice.gstAmount.toFixed(2) }}</td>
+            <td><strong>₹{{ invoice.total.toFixed(2) }}</strong></td>
+            <td>
+              <span
+                class="status-badge"
+                [class.status-pending]="invoice.paymentStatus === 'pending'"
+                [class.status-paid]="invoice.paymentStatus === 'paid'"
+                [class.status-partial]="invoice.paymentStatus === 'partial'"
+              >
+                {{ invoice.paymentStatus | uppercase }}
+              </span>
+            </td>
+            <td>
+              <button (click)="viewInvoice(invoice)" class="btn btn-sm btn-info">View</button>
+              <button (click)="printInvoice(invoice)" class="btn btn-sm btn-info">Print</button>
+              <button (click)="updatePaymentStatus(invoice.id)" class="btn btn-sm btn-warning">Update Status</button>
+              <button (click)="deleteInvoice(invoice.id)" class="btn btn-sm btn-danger">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="(invoices$() | slice: 0).length === 0" class="empty-state">
+      <p>No invoices yet. Create your first invoice!</p>
+    </div>
+  </div>
+</div>

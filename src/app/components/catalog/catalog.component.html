@@ -1,0 +1,191 @@
+<div class="catalog-container">
+  <div class="catalog-header">
+    <h1>Store Catalog</h1>
+    <p>Browse our premium collection of stones and granite</p>
+  </div>
+
+  <div class="catalog-content">
+    <!-- Sidebar Filters -->
+    <aside class="filters-sidebar">
+      <div class="filter-section">
+        <h3>Search</h3>
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (keyup)="search()"
+          placeholder="Search stones..."
+          class="search-input"
+        />
+      </div>
+
+      <div class="filter-section">
+        <h3>Stone Type</h3>
+        <select [(ngModel)]="selectedType" (change)="applyFilters()" class="filter-select">
+          <option value="">All Types</option>
+          <option *ngFor="let type of types" value="{{ type }}">{{ type }}</option>
+        </select>
+      </div>
+
+      <div class="filter-section">
+        <h3>Color</h3>
+        <select [(ngModel)]="selectedColor" (change)="applyFilters()" class="filter-select">
+          <option value="">All Colors</option>
+          <option *ngFor="let color of colors" value="{{ color }}">{{ color }}</option>
+        </select>
+      </div>
+
+      <div class="filter-section">
+        <h3>Price Range</h3>
+        <div class="price-inputs">
+          <input
+            type="number"
+            [(ngModel)]="selectedMinPrice"
+            (change)="applyFilters()"
+            placeholder="Min"
+            class="price-input"
+          />
+          <span>-</span>
+          <input
+            type="number"
+            [(ngModel)]="selectedMaxPrice"
+            (change)="applyFilters()"
+            placeholder="Max"
+            class="price-input"
+          />
+        </div>
+        <p class="price-display">₹{{ selectedMinPrice }} - ₹{{ selectedMaxPrice }}</p>
+      </div>
+
+      <button (click)="resetFilters()" class="btn btn-reset">Reset Filters</button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <div class="top-bar">
+        <div class="results-count">
+          <p>Showing {{ filteredStones.length }} product<span *ngIf="filteredStones.length !== 1">s</span></p>
+        </div>
+        <div class="view-toggle">
+          <button
+            (click)="toggleViewMode()"
+            class="btn btn-sm"
+            [class.active]="viewMode === 'grid'"
+          >
+            ⊞ Grid
+          </button>
+          <button
+            (click)="toggleViewMode()"
+            class="btn btn-sm"
+            [class.active]="viewMode === 'list'"
+          >
+            ☰ List
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid View -->
+      <div *ngIf="viewMode === 'grid'" class="products-grid">
+        <div *ngFor="let stone of filteredStones" class="product-card">
+          <div class="product-image">
+            <div class="image-placeholder" [style.background]="'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'">
+              <span class="stone-type-badge">{{ stone.type }}</span>
+            </div>
+          </div>
+
+          <div class="product-info">
+            <h3>{{ stone.name }}</h3>
+            <p class="stone-color">🎨 {{ stone.color }}</p>
+
+            <div class="rating">
+              <span class="stars">⭐⭐⭐⭐⭐</span>
+              <span class="rating-text">({{ getAverageRating() }})</span>
+            </div>
+
+            <div class="product-meta">
+              <p><strong>Supplier:</strong> {{ stone.supplier }}</p>
+              <p *ngIf="stone.description" class="description">{{ stone.description }}</p>
+            </div>
+
+            <div class="sizes">
+              <strong>Available Sizes:</strong>
+              <div class="size-list">
+                <span *ngFor="let size of stone.sizes" class="size-badge">
+                  {{ size.dimension }}
+                </span>
+              </div>
+            </div>
+
+            <div class="product-footer">
+              <div class="price">
+                <span class="price-label">Price:</span>
+                <span class="price-value">₹{{ stone.pricePerUnit }}/unit</span>
+              </div>
+              <div class="availability" [class.in-stock]="stone.stockQuantity > 0">
+                <span *ngIf="stone.stockQuantity > 0">✓ In Stock</span>
+                <span *ngIf="stone.stockQuantity === 0">Out of Stock</span>
+              </div>
+            </div>
+
+            <button
+              (click)="contactForOrder(stone.name)"
+              class="btn btn-primary btn-block"
+              [disabled]="stone.stockQuantity === 0"
+            >
+              Inquire Now
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- List View -->
+      <div *ngIf="viewMode === 'list'" class="products-list">
+        <table class="products-table">
+          <thead>
+            <tr>
+              <th>Stone Name</th>
+              <th>Type</th>
+              <th>Color</th>
+              <th>Price/Unit</th>
+              <th>Stock</th>
+              <th>Available Sizes</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let stone of filteredStones" [class.out-of-stock]="stone.stockQuantity === 0">
+              <td><strong>{{ stone.name }}</strong></td>
+              <td>{{ stone.type }}</td>
+              <td>{{ stone.color }}</td>
+              <td>₹{{ stone.pricePerUnit }}</td>
+              <td [class.low-stock]="stone.stockQuantity > 0 && stone.stockQuantity <= 20">
+                {{ stone.stockQuantity }} units
+              </td>
+              <td>
+                <div class="size-tags">
+                  <span *ngFor="let size of stone.sizes" class="size-tag">{{ size.dimension }}</span>
+                </div>
+              </td>
+              <td>
+                <button
+                  (click)="contactForOrder(stone.name)"
+                  class="btn btn-sm btn-primary"
+                  [disabled]="stone.stockQuantity === 0"
+                >
+                  Inquire
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="filteredStones.length === 0" class="empty-state">
+        <h3>No stones found</h3>
+        <p>Try adjusting your filters or search query</p>
+        <button (click)="resetFilters()" class="btn btn-primary">Reset Filters</button>
+      </div>
+    </main>
+  </div>
+</div>

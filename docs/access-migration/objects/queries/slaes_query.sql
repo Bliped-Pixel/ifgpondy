@@ -1,0 +1,3 @@
+﻿SELECT query_sundrydebtor_sales.debtors_amount
+FROM query_sundrydebtor_sales;
+

@@ -1,0 +1,5 @@
+Option Compare Database
+
+Public Function useraccess(button_name As String) As Boolean
+useraccess = Nz(DLookup("has_access", "employeeaccess", "auth_id='" & TempVars("role") & "'" & "AND button_name='" & button_name & "'"), False)
+End Function
