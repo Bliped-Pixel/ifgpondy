@@ -1,0 +1,3 @@
+name,type,color,pricePerUnit,supplier,description,stockQuantity,size_2x2,size_3x3,size_4x4,size_5x5,size_6x6,size_2x1,size_3x1.5,size_12x12,size_18x18,size_24x24
+Sample Black Granite,Granite,Black,500,XYZ Suppliers,Premium polished stone,,0,0,0,0,10,0,0,0,0,0
+Sample Cuddapah,Cuddapah,Gray,300,ABC Quarries,Cuddapah slab stock,,0,0,0,4,8,0,0,0,0,0

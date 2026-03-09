@@ -1,0 +1,8 @@
+Option Compare Database
+
+Public Function balcheck(item_id As Integer) As Integer
+
+Dim balance As Integer
+balance = Nz(DLookup("balance_qty", "item_bal_query", "item_id=" & item_id), 0)
+balcheck = balance
+End Function

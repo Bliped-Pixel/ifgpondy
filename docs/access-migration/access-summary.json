@@ -1,0 +1,2351 @@
+﻿{
+    "database":  "c:\\Users\\munta\\Documents\\Programming\\IndoFrench\\IFG\\BackupDB-28-02-2026 (1).accdb",
+    "extractedAt":  "2026-02-28T12:10:28",
+    "tableCount":  36,
+    "queryCount":  82,
+    "formCount":  62,
+    "reportCount":  17,
+    "macroCount":  0,
+    "moduleCount":  5,
+    "tables":  [
+                   {
+                       "table":  "access_tbl",
+                       "fields":  [
+                                      {
+                                          "name":  "task",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "account",
+                       "fields":  [
+                                      {
+                                          "name":  "ac_ID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "account_type",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "company_table",
+                       "fields":  [
+                                      {
+                                          "name":  "comp_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "company_name",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "company_address",
+                                          "type":  12,
+                                          "size":  0,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "company_city",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "phone_land_line",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "phone_mobile",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "state_in_company",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "comapny_email",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "accounts_start_date",
+                                          "type":  8,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "account_end_date",
+                                          "type":  8,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "dealers_of",
+                                          "type":  12,
+                                          "size":  0,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "contra_entry",
+                       "fields":  [
+                                      {
+                                          "name":  "contra_ID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "deposit_date",
+                                          "type":  8,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "ledger",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "amount",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "note",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "employee_attaendance",
+                       "fields":  [
+                                      {
+                                          "name":  "payroll_ID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "employee_name",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "present_days",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "absent_days",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "over_time",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "holyday",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "employeeaccess",
+                       "fields":  [
+                                      {
+                                          "name":  "auth_ID",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  true,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "button_name",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  true,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "has_access",
+                                          "type":  1,
+                                          "size":  1,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "item_category",
+                       "fields":  [
+                                      {
+                                          "name":  "cat_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "category",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "items",
+                       "fields":  [
+                                      {
+                                          "name":  "item_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "itemcode",
+                                          "type":  10,
+                                          "size":  55,
+                                          "required":  true,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "item_name",
+                                          "type":  10,
+                                          "size":  55,
+                                          "required":  true,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "material",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "unit",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "item_sft",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "min_stock",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "opening_stock",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "discontinue",
+                                          "type":  1,
+                                          "size":  1,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "ledger",
+                       "fields":  [
+                                      {
+                                          "name":  "lgID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "ledgername",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "ledgergroup",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "contactname",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "contactnumber",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "contactaddress",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "city",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "state",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "ledgerbalance",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "GSTNo",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "gst",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "opening_balance",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "ledger_payments",
+                       "fields":  [
+                                      {
+                                          "name":  "pay_ID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "pay_date",
+                                          "type":  8,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "ledger_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "pay_amount",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "pay_mode",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "remarks",
+                                          "type":  10,
+                                          "size":  150,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "ledger_receipt",
+                       "fields":  [
+                                      {
+                                          "name":  "ID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "pay_date",
+                                          "type":  8,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "ldger_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "pay_mode",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "amount",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "remarks",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "ledgergroup",
+                       "fields":  [
+                                      {
+                                          "name":  "lggID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "lggroupname",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "login_record",
+                       "fields":  [
+                                      {
+                                          "name":  "user_rec_ID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "ID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "user_name",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "login_time",
+                                          "type":  8,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "logout_time",
+                                          "type":  8,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "materials",
+                       "fields":  [
+                                      {
+                                          "name":  "mat_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "material_name",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "category_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "mat_sale_price",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "mat_pur_price",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "mat_tax",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "unit",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "month",
+                       "fields":  [
+                                      {
+                                          "name":  "m_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "month_name",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "order_detail",
+                       "fields":  [
+                                      {
+                                          "name":  "ODDID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "ODID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "itemcode",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "item_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "item_sft",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "qty",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_sft",
+                                          "type":  20,
+                                          "size":  16,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "order_entry",
+                       "fields":  [
+                                      {
+                                          "name":  "ODID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  true,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "order_date",
+                                          "type":  8,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "customer",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "material",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_qty",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_bill_sft",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "payment_modes",
+                       "fields":  [
+                                      {
+                                          "name":  "ID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "pay_mode",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "pur_tax_type",
+                       "fields":  [
+                                      {
+                                          "name":  "pur_txtype_ID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "pur_tax_type",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "pur_type",
+                       "fields":  [
+                                      {
+                                          "name":  "purtype_ID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "pur_type",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "purchase_detail",
+                       "fields":  [
+                                      {
+                                          "name":  "PDID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "PEID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "itemcode",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "item_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "item_sft",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "qty",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_sft",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "mat_tax",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "mat_pur_price",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "amount",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "tax_amout",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_amout",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "category",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "purchase_entry",
+                       "fields":  [
+                                      {
+                                          "name":  "PEID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  true,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "pur_date",
+                                          "type":  8,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "sup_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "account_type",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "pur_type",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "tax_type",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "discount",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_bill",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "final_total",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "cash_paid",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_tax",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "labour",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_qty",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_bill_sft",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "transport",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "delivery_no",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "input_igst",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "input_sgst",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "input_cgst",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "item_cartegory",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "quotation_detail",
+                       "fields":  [
+                                      {
+                                          "name":  "QDID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "QEID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "itemcode",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "item_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "item_sft",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "qty",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_sft",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "mat_tax",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "mat_sale_price",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "amount",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "tax_amount",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_amount",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "quotation_entry",
+                       "fields":  [
+                                      {
+                                          "name":  "QEID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  true,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "quot_date",
+                                          "type":  8,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "customer_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "sale_type",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "tax_type",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_bill",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_tax",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "labour",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "discount",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "final_bill",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "cash_paid",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "balance",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_qty",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_bill_sft",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "user",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "outputsgst",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "outputcgst",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "outputigst",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "transport",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "driver_number",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "amount",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "paymode",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "item_category",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "salary_details",
+                       "fields":  [
+                                      {
+                                          "name":  "ID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "employee_name",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "basic_salary",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "wages",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "holiday",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "overtime_hour",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "bonus",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "sales_commision",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "advance",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "sale_tax_type",
+                       "fields":  [
+                                      {
+                                          "name":  "sale_txtype_ID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "sale_tax_type",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "sale_type",
+                       "fields":  [
+                                      {
+                                          "name":  "saletype_ID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "sale_type",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "sales_detail",
+                       "fields":  [
+                                      {
+                                          "name":  "SDID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "SEID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "itemcode",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "item_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "item_sft",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "qty",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_sft",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "mat_tax",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "mat_sale_price",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "amount",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "tax_amount",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_amount",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "sales_entry",
+                       "fields":  [
+                                      {
+                                          "name":  "SEID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  true,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "sales_date",
+                                          "type":  8,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "customer_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "sale_type",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "tax_type",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_bill",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_tax",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "labour",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "discount",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "final_bill",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "cash_paid",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "balance",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_qty",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_bill_sft",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "user",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "outputsgst",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "outputcgst",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "outputigst",
+                                          "type":  5,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "transport",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "driver_number",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "amount",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "paymode",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "item_category",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "sizes",
+                       "fields":  [
+                                      {
+                                          "name":  "szID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "sizes",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "state_table",
+                       "fields":  [
+                                      {
+                                          "name":  "state_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "state_name",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "stock_entry",
+                       "fields":  [
+                                      {
+                                          "name":  "stock_entry_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  true,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "st_ent_date",
+                                          "type":  8,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "stock_in_total",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "stock_out_total",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "material",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "note",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "stock_in",
+                       "fields":  [
+                                      {
+                                          "name":  "st_in_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "stock_entry_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "item_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "item_name",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "item_sft",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "st_in_qty",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_in_sqfeet",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "stock_out",
+                       "fields":  [
+                                      {
+                                          "name":  "st_out_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "stock_entry_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "item_id",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "item_name",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "item_sft",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "st_out_qty",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "total_sqfeet_out",
+                                          "type":  7,
+                                          "size":  8,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "units",
+                       "fields":  [
+                                      {
+                                          "name":  "unit_ID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "unite_name",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      }
+                                  ]
+                   },
+                   {
+                       "table":  "users",
+                       "fields":  [
+                                      {
+                                          "name":  "ID",
+                                          "type":  4,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "operater_name",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "user_name",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "role",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "password",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "user_contact",
+                                          "type":  10,
+                                          "size":  255,
+                                          "required":  false,
+                                          "allowZeroLength":  true
+                                      },
+                                      {
+                                          "name":  "not_active",
+                                          "type":  1,
+                                          "size":  1,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      },
+                                      {
+                                          "name":  "photo",
+                                          "type":  101,
+                                          "size":  4,
+                                          "required":  false,
+                                          "allowZeroLength":  false
+                                      }
+                                  ]
+                   }
+               ],
+    "queries":  [
+                    {
+                        "name":  "bank_exp_query",
+                        "sql":  "SELECT ledger_payments.pay_date, ledger_payments.pay_amount AS bank_exp\r\nFROM ledger_payments\r\nWHERE (((ledger_payments.pay_mode)=2));\r\n"
+                    },
+                    {
+                        "name":  "bank_receipt_query",
+                        "sql":  "SELECT ledger_receipt.pay_date, ledger_receipt.pay_mode, ledger_receipt.amount\r\nFROM ledger_receipt\r\nWHERE (((ledger_receipt.pay_mode)=2));\r\n"
+                    },
+                    {
+                        "name":  "cash_exp_query",
+                        "sql":  "SELECT ledger_payments.pay_date, Sum(ledger_payments.pay_amount) AS cash_exp\r\nFROM ledger_payments\r\nGROUP BY ledger_payments.pay_date, ledger_payments.pay_mode\r\nHAVING (((ledger_payments.pay_mode)=1));\r\n"
+                    },
+                    {
+                        "name":  "cash_in_hand_query",
+                        "sql":  "SELECT sales_exp_rb.pay_date, sales_exp_rb.amount, sales_exp_rb.expenses, (Select Sum(nz([amount],0)-nz([expenses],0))From date_sale_exp_query Where date_sale_exp_query.pay_date\u003c=sales_exp_rb.pay_date) AS balance\r\nFROM date_sale_exp_query AS sales_exp_rb\r\nORDER BY sales_exp_rb.pay_date;\r\n"
+                    },
+                    {
+                        "name":  "cash_pur_query",
+                        "sql":  "SELECT Count(purchase_entry.PEID) AS CountOfPEID, purchase_entry.pur_date, Sum(purchase_entry.final_total) AS cash_pur, purchase_entry.pur_type\r\nFROM purchase_entry\r\nGROUP BY purchase_entry.pur_date, purchase_entry.pur_type\r\nHAVING (((purchase_entry.pur_type)=1));\r\n"
+                    },
+                    {
+                        "name":  "cash_receipt_query",
+                        "sql":  "SELECT ledger_receipt.pay_date, ledger_receipt.pay_mode, ledger_receipt.amount\r\nFROM ledger_receipt\r\nWHERE (((ledger_receipt.pay_mode)=1));\r\n"
+                    },
+                    {
+                        "name":  "cash_sales_query",
+                        "sql":  "SELECT Count(sales_entry.SEID) AS CountOfSEID, sales_entry.sales_date, sales_entry.sale_type, Sum(sales_entry.final_bill) AS cash_sale\r\nFROM sales_entry\r\nGROUP BY sales_entry.sales_date, sales_entry.sale_type\r\nHAVING (((sales_entry.sale_type)=1));\r\n"
+                    },
+                    {
+                        "name":  "cat_query",
+                        "sql":  "SELECT item_category.cat_id, item_category.category\r\nFROM item_category\r\nUNION SELECT 0,\"All Category\" from item_category;\r\n"
+                    },
+                    {
+                        "name":  "closing_stock_query",
+                        "sql":  "SELECT item_category.cat_id, item_category.category, Sum(items_list_query.st_value) AS closing\r\nFROM item_category LEFT JOIN items_list_query ON item_category.category = items_list_query.category\r\nGROUP BY item_category.cat_id, item_category.category;\r\n"
+                    },
+                    {
+                        "name":  "contra_amount_query",
+                        "sql":  "SELECT contra_entry.deposit_date, Sum(contra_entry.amount) AS contra_amount\r\nFROM contra_entry\r\nGROUP BY contra_entry.deposit_date;\r\n"
+                    },
+                    {
+                        "name":  "credit_pur_query",
+                        "sql":  "SELECT ledger.lgID, ledger.ledgername, purchase_entry.final_total, purchase_entry.pur_date\r\nFROM ledger INNER JOIN purchase_entry ON ledger.lgID = purchase_entry.sup_id;\r\n"
+                    },
+                    {
+                        "name":  "credit_sales_query",
+                        "sql":  "SELECT Count(sales_entry.SEID) AS CountOfSEID, sales_entry.sales_date, sales_entry.sale_type, Sum(sales_entry.final_bill) AS credit_sale\r\nFROM sales_entry\r\nGROUP BY sales_entry.sales_date, sales_entry.sale_type\r\nHAVING (((sales_entry.sale_type)=2));\r\n"
+                    },
+                    {
+                        "name":  "creditors_openingbal_query",
+                        "sql":  "SELECT ledgergroup.lggID, ledger.ledgername, ledger.opening_balance\r\nFROM ledgergroup INNER JOIN ledger ON ledgergroup.lggID = ledger.ledgergroup\r\nWHERE (((ledgergroup.lggID)=2));\r\n"
+                    },
+                    {
+                        "name":  "creditors_payment_query",
+                        "sql":  "SELECT ledger.lgID, ledger.ledgername, ledger_payments.pay_amount, ledger_payments.pay_date, ledgergroup.lggID\r\nFROM (ledgergroup INNER JOIN ledger ON ledgergroup.lggID = ledger.ledgergroup) INNER JOIN ledger_payments ON (ledger.lgID = ledger_payments.ledger_id) AND (ledger.lgID = ledger_payments.ledger_id)\r\nWHERE (((ledgergroup.lggID)=2));\r\n"
+                    },
+                    {
+                        "name":  "cudd_pur_query",
+                        "sql":  "SELECT purchase_entry.pur_date, Sum(purchase_detail.amount) AS cuddpah, item_category.cat_id\r\nFROM purchase_entry INNER JOIN ((item_category INNER JOIN (materials INNER JOIN items ON (materials.mat_id = items.material) AND (materials.mat_id = items.material)) ON item_category.cat_id = materials.category_id) INNER JOIN purchase_detail ON items.item_id = purchase_detail.item_id) ON purchase_entry.PEID = purchase_detail.PEID\r\nGROUP BY purchase_entry.pur_date, item_category.cat_id\r\nHAVING (((item_category.cat_id)=1));\r\n"
+                    },
+                    {
+                        "name":  "cudd_sales_qty_date_query",
+                        "sql":  "SELECT sales_entry.sales_date, sales_detail.item_id, Sum(sales_detail.qty) AS qty, item_category.cat_id, item_category.category, items.item_sft, [qty]*[items]![item_sft] AS total_sft\r\nFROM sales_entry INNER JOIN ((item_category INNER JOIN (materials INNER JOIN items ON (materials.mat_id = items.material) AND (materials.mat_id = items.material)) ON item_category.cat_id = materials.category_id) INNER JOIN sales_detail ON items.item_id = sales_detail.item_id) ON sales_entry.SEID = sales_detail.SEID\r\nGROUP BY sales_entry.sales_date, sales_detail.item_id, item_category.cat_id, item_category.category, items.item_sft, [qty]*[items]![item_sft]\r\nHAVING (((item_category.cat_id)=1));\r\n"
+                    },
+                    {
+                        "name":  "cudd_sales_query",
+                        "sql":  "SELECT sales_entry.sales_date, Sum(sales_detail.amount) AS cuddpah, item_category.cat_id\r\nFROM sales_entry INNER JOIN ((item_category INNER JOIN (materials INNER JOIN items ON (materials.mat_id = items.material) AND (materials.mat_id = items.material)) ON item_category.cat_id = materials.category_id) INNER JOIN sales_detail ON items.item_id = sales_detail.item_id) ON sales_entry.SEID = sales_detail.SEID\r\nGROUP BY sales_entry.sales_date, item_category.cat_id\r\nHAVING (((item_category.cat_id)=1));\r\n"
+                    },
+                    {
+                        "name":  "customer",
+                        "sql":  "SELECT customer.lgID, customer.ledgername\r\nFROM customer;\r\n"
+                    },
+                    {
+                        "name":  "customer_balance_query",
+                        "sql":  "SELECT ledger.lgID, ledger.ledgername, ledger.contactnumber, ledgers_sales_query.credit, ledgers_payment_query.debit, Nz([credit],0)-Nz([debit],0) AS balance, [ledger]![ledgername] \u0026 [contactnumber] AS search\r\nFROM (ledgers_sales_query LEFT JOIN ledger ON ledgers_sales_query.lgID = ledger.lgID) LEFT JOIN ledgers_payment_query ON ledger.lgID = ledgers_payment_query.lgID\r\nWHERE (((ledger.ledgergroup)=(2) Or (ledger.ledgergroup)=(3) Or (ledger.ledgergroup)=(4)));\r\n"
+                    },
+                    {
+                        "name":  "customer_sales_query",
+                        "sql":  "SELECT sales_entry.SEID, sales_entry.sales_date, ledger.ledgername, sales_entry.customer_id, ledger.GSTNo, sales_entry.sale_type, sales_entry.final_bill, sales_entry.total_bill, sales_entry.total_tax, sales_entry.labour, sales_entry.discount, sales_entry.total_qty, sales_entry.total_bill_sft, sales_entry.item_category, sales_entry.customer_id AS search\r\nFROM ledger INNER JOIN sales_entry ON ledger.lgID = sales_entry.customer_id\r\nORDER BY sales_entry.SEID, sales_entry.sales_date;\r\n"
+                    },
+                    {
+                        "name":  "date_bank_exp_query",
+                        "sql":  "SELECT ledger_payments.pay_date, Sum(ledger_payments.pay_amount) AS bank_exp\r\nFROM ledger_payments\r\nGROUP BY ledger_payments.pay_date, ledger_payments.pay_mode\r\nHAVING (((ledger_payments.pay_mode)=2));\r\n"
+                    },
+                    {
+                        "name":  "date_bank_receipt_query",
+                        "sql":  "SELECT ledger_receipt.pay_date, ledger_receipt.pay_mode, Sum(ledger_receipt.amount) AS bank_sales\r\nFROM ledger_receipt\r\nGROUP BY ledger_receipt.pay_date, ledger_receipt.pay_mode\r\nHAVING (((ledger_receipt.pay_mode)=2));\r\n"
+                    },
+                    {
+                        "name":  "date_sale_exp_query",
+                        "sql":  "SELECT total_receipt_query.pay_date, total_receipt_query.amount, total_exp_query.expenses\r\nFROM total_receipt_query LEFT JOIN total_exp_query ON total_receipt_query.pay_date = total_exp_query.pay_date;\r\n"
+                    },
+                    {
+                        "name":  "direct_exp_date_query",
+                        "sql":  "SELECT ledger_payments.ledger_id, ledger_payments.pay_amount, ledgergroup.lggID, ledger_payments.pay_date\r\nFROM (ledgergroup INNER JOIN ledger ON ledgergroup.lggID = ledger.ledgergroup) INNER JOIN ledger_payments ON (ledger.lgID = ledger_payments.ledger_id) AND (ledger.lgID = ledger_payments.ledger_id)\r\nWHERE (((ledgergroup.lggID)=7));\r\n"
+                    },
+                    {
+                        "name":  "direct_exp_query",
+                        "sql":  "SELECT ledger_payments.pay_date, ledger.ledgergroup, Sum(ledger_payments.pay_amount) AS creditors_payemnt\r\nFROM ledger INNER JOIN ledger_payments ON (ledger.lgID = ledger_payments.ledger_id) AND (ledger.lgID = ledger_payments.ledger_id)\r\nGROUP BY ledger_payments.pay_date, ledger.ledgergroup\r\nHAVING (((ledger.ledgergroup)=2));\r\n"
+                    },
+                    {
+                        "name":  "exp_list_query",
+                        "sql":  "SELECT ledger_payments.pay_ID, ledger.lgID, ledger.ledgername, ledger_payments.pay_date, ledger_payments.pay_mode, ledger_payments.pay_amount, ledger_payments.remarks\r\nFROM ledger INNER JOIN ledger_payments ON (ledger.lgID = ledger_payments.ledger_id) AND (ledger.lgID = ledger_payments.ledger_id)\r\nORDER BY ledger_payments.pay_ID, ledger_payments.pay_date;\r\n"
+                    },
+                    {
+                        "name":  "extra_labour_query",
+                        "sql":  "SELECT ledger.lgID, ledger.ledgername, ledger.ledgergroup, ledger_receipt.pay_date, ledger_receipt.amount\r\nFROM ledger LEFT JOIN ledger_receipt ON ledger.lgID = ledger_receipt.ldger_id\r\nWHERE (((ledger.ledgergroup)=11));\r\n"
+                    },
+                    {
+                        "name":  "granite_pur_query",
+                        "sql":  "SELECT purchase_entry.pur_date, Sum(purchase_detail.amount) AS granite, item_category.cat_id\r\nFROM purchase_entry INNER JOIN ((item_category INNER JOIN (materials INNER JOIN items ON (materials.mat_id = items.material) AND (materials.mat_id = items.material)) ON item_category.cat_id = materials.category_id) INNER JOIN purchase_detail ON items.item_id = purchase_detail.item_id) ON purchase_entry.PEID = purchase_detail.PEID\r\nGROUP BY purchase_entry.pur_date, item_category.cat_id\r\nHAVING (((item_category.cat_id)=2));\r\n"
+                    },
+                    {
+                        "name":  "granite_sales_qty_date_query",
+                        "sql":  "SELECT sales_entry.sales_date, sales_detail.item_id, Sum(sales_detail.qty) AS qty, item_category.cat_id, item_category.category, items.item_sft, [qty]*[items]![item_sft] AS total_sft\r\nFROM sales_entry INNER JOIN ((item_category INNER JOIN (materials INNER JOIN items ON (materials.mat_id = items.material) AND (materials.mat_id = items.material)) ON item_category.cat_id = materials.category_id) INNER JOIN sales_detail ON items.item_id = sales_detail.item_id) ON sales_entry.SEID = sales_detail.SEID\r\nGROUP BY sales_entry.sales_date, sales_detail.item_id, item_category.cat_id, item_category.category, items.item_sft, [qty]*[items]![item_sft]\r\nHAVING (((item_category.cat_id)=2));\r\n"
+                    },
+                    {
+                        "name":  "granite_sales_query",
+                        "sql":  "SELECT sales_entry.sales_date, Sum(sales_detail.amount) AS granite, item_category.cat_id\r\nFROM sales_entry INNER JOIN ((item_category INNER JOIN (materials INNER JOIN items ON (materials.mat_id = items.material) AND (materials.mat_id = items.material)) ON item_category.cat_id = materials.category_id) INNER JOIN sales_detail ON items.item_id = sales_detail.item_id) ON sales_entry.SEID = sales_detail.SEID\r\nGROUP BY sales_entry.sales_date, item_category.cat_id\r\nHAVING (((item_category.cat_id)=2));\r\n"
+                    },
+                    {
+                        "name":  "indirect_exp_date_query",
+                        "sql":  "SELECT ledger_payments.ledger_id, ledger_payments.pay_amount AS total_exp, ledgergroup.lggID, ledger_payments.pay_date\r\nFROM (ledgergroup INNER JOIN ledger ON ledgergroup.lggID = ledger.ledgergroup) INNER JOIN ledger_payments ON (ledger.lgID = ledger_payments.ledger_id) AND (ledger.lgID = ledger_payments.ledger_id)\r\nWHERE (((ledgergroup.lggID)=6));\r\n"
+                    },
+                    {
+                        "name":  "indirect_exp_ledg_query",
+                        "sql":  "SELECT ledger.ledgername, Sum(ledger_payments.pay_amount) AS total_exp\r\nFROM (ledgergroup INNER JOIN ledger ON ledgergroup.lggID = ledger.ledgergroup) INNER JOIN ledger_payments ON (ledger.lgID = ledger_payments.ledger_id) AND (ledger.lgID = ledger_payments.ledger_id)\r\nGROUP BY ledger.ledgername, ledgergroup.lggID\r\nHAVING (((ledgergroup.lggID)=6));\r\n"
+                    },
+                    {
+                        "name":  "item_bal_query",
+                        "sql":  "SELECT items.item_id, items.itemcode, items.item_name, items.opening_stock, pur_qty_query.pur_qty, sales_qty_query.sales_qty, materials.mat_id, stock_in_item_total.st_in_qty, stock_out_item_total.st_out_qty, (Nz([opening_stock],0)+Nz([pur_qty],0)+Nz([st_in_qty],0))-(Nz([sales_qty],0)+Nz([st_out_qty],0)) AS balance_qty, items.material, items.item_sft, [sales_qty]*[item_sft] AS st_sft, materials.mat_pur_price, materials.unit, item_category.category, materials.material_name\r\nFROM item_category INNER JOIN (materials INNER JOIN ((((items LEFT JOIN pur_qty_query ON items.item_id = pur_qty_query.item_id) LEFT JOIN sales_qty_query ON items.item_id = sales_qty_query.item_id) LEFT JOIN stock_in_item_total ON items.item_id = stock_in_item_total.item_id) LEFT JOIN stock_out_item_total ON items.item_id = stock_out_item_total.item_id) ON (materials.mat_id = items.material) AND (materials.mat_id = items.material)) ON item_category.cat_id = materials.category_id;\r\n"
+                    },
+                    {
+                        "name":  "items_list_query",
+                        "sql":  "SELECT items.item_id, items.item_name, items.item_sft, materials.mat_tax, materials.mat_pur_price, materials.material_name, items.itemcode, items.unit, materials.mat_sale_price, item_category.category, items.discontinue, materials.mat_id, item_bal_query.balance_qty, Nz([balance_qty],0)*Nz([items]![item_sft],0) AS st_sft, items.material, Nz([st_sft],0)*Nz([materials]![mat_pur_price],0) AS st_value\r\nFROM units INNER JOIN (item_category INNER JOIN (materials INNER JOIN (items LEFT JOIN item_bal_query ON items.item_id = item_bal_query.item_id) ON (materials.mat_id = items.material) AND (materials.mat_id = items.material)) ON item_category.cat_id = materials.category_id) ON units.unit_ID = materials.unit\r\nORDER BY items.item_name;\r\n"
+                    },
+                    {
+                        "name":  "labour_discount_tax_query",
+                        "sql":  "SELECT sales_entry.sales_date, Sum(sales_entry.labour) AS labour, Sum(sales_entry.discount) AS discount, Sum(sales_entry.total_tax) AS tax\r\nFROM sales_entry\r\nGROUP BY sales_entry.sales_date;\r\n"
+                    },
+                    {
+                        "name":  "ledger_balance_query",
+                        "sql":  "SELECT ledger.lgID, ledger.ledgername, ledger.ledgergroup, ledgers_sales_query.credit, ledgers_payment_query.debit, Nz([credit],0)-Nz([debit],0) AS balance\r\nFROM (ledgers_sales_query RIGHT JOIN ledger ON ledgers_sales_query.lgID = ledger.lgID) LEFT JOIN ledgers_payment_query ON ledger.lgID = ledgers_payment_query.lgID\r\nWHERE (((ledger.ledgergroup)=3));\r\n"
+                    },
+                    {
+                        "name":  "ledger_receipt_amount_query",
+                        "sql":  "SELECT ledger_receipt.pay_date, ledger_receipt.ldger_id, Sum(ledger_receipt.amount) AS amount\r\nFROM ledger_receipt\r\nGROUP BY ledger_receipt.pay_date, ledger_receipt.ldger_id\r\nHAVING (((ledger_receipt.ldger_id)\u003c\u003e30));\r\n"
+                    },
+                    {
+                        "name":  "ledger_recipt_query",
+                        "sql":  "SELECT ledger.lgID, ledger_receipt.ldger_id, ledger.ledgername, Sum(ledger_receipt.amount) AS debit\r\nFROM ledger LEFT JOIN ledger_receipt ON ledger.lgID = ledger_receipt.ldger_id\r\nGROUP BY ledger.lgID, ledger_receipt.ldger_id, ledger.ledgername;\r\n"
+                    },
+                    {
+                        "name":  "ledger_sales_amount_query",
+                        "sql":  "SELECT sales_entry.sales_date, sales_entry.customer_id, Sum(sales_entry.final_bill) AS final_bill\r\nFROM sales_entry\r\nGROUP BY sales_entry.sales_date, sales_entry.customer_id;\r\n"
+                    },
+                    {
+                        "name":  "ledgers_payment_query",
+                        "sql":  "SELECT ledger.lgID, ledger.ledgername, Sum(ledger_receipt.amount) AS debit\r\nFROM ledger LEFT JOIN ledger_receipt ON ledger.lgID = ledger_receipt.ldger_id\r\nGROUP BY ledger.lgID, ledger.ledgername;\r\n"
+                    },
+                    {
+                        "name":  "ledgers_purchase_query",
+                        "sql":  "SELECT purchase_entry.pur_date, ledger.lgID, ledger.ledgername, Sum(purchase_entry.final_total) AS credit\r\nFROM ledger INNER JOIN purchase_entry ON ledger.lgID = purchase_entry.sup_id\r\nGROUP BY purchase_entry.pur_date, ledger.lgID, ledger.ledgername;\r\n"
+                    },
+                    {
+                        "name":  "ledgers_sales_query",
+                        "sql":  "SELECT ledger.lgID, ledger.ledgername, Sum(sales_entry.final_bill) AS credit\r\nFROM ledger INNER JOIN sales_entry ON ledger.lgID = sales_entry.customer_id\r\nGROUP BY ledger.lgID, ledger.ledgername;\r\n"
+                    },
+                    {
+                        "name":  "login_duration",
+                        "sql":  "SELECT login_record.user_name, login_record.login_time, login_record.logout_time, DateDiff(\"n\",[login_time],[logout_time]) AS minutes, [minutes]\\60 AS hours, [minutes]-([hours]*60) AS min_left, [hours] \u0026 \" H:\" \u0026 [min_left] \u0026 \" Min\" AS duration\r\nFROM login_record;\r\n"
+                    },
+                    {
+                        "name":  "login_record_query",
+                        "sql":  "SELECT login_record.user_name, login_record.login_time, login_record.logout_time, DateDiff(\"n\",[login_time],[logout_time]) AS minutes, [minutes]\\60 AS hours, [minutes]-([hours]*60) AS minleft, [hours] \u0026 \" Hr \" \u0026 [minleft] \u0026 \" Min\" AS duration\r\nFROM login_record;\r\n"
+                    },
+                    {
+                        "name":  "marble_pur_query",
+                        "sql":  "SELECT purchase_entry.pur_date, Sum(purchase_detail.amount) AS marble, item_category.cat_id\r\nFROM purchase_entry INNER JOIN ((item_category INNER JOIN (materials INNER JOIN items ON (materials.mat_id = items.material) AND (materials.mat_id = items.material)) ON item_category.cat_id = materials.category_id) INNER JOIN purchase_detail ON items.item_id = purchase_detail.item_id) ON purchase_entry.PEID = purchase_detail.PEID\r\nGROUP BY purchase_entry.pur_date, item_category.cat_id\r\nHAVING (((item_category.cat_id)=3));\r\n"
+                    },
+                    {
+                        "name":  "marble_sales_query",
+                        "sql":  "SELECT sales_entry.sales_date, Sum(sales_detail.amount) AS marble, item_category.cat_id\r\nFROM sales_entry INNER JOIN ((item_category INNER JOIN (materials INNER JOIN items ON (materials.mat_id = items.material) AND (materials.mat_id = items.material)) ON item_category.cat_id = materials.category_id) INNER JOIN sales_detail ON items.item_id = sales_detail.item_id) ON sales_entry.SEID = sales_detail.SEID\r\nGROUP BY sales_entry.sales_date, item_category.cat_id\r\nHAVING (((item_category.cat_id)=3));\r\n"
+                    },
+                    {
+                        "name":  "marbles_sales_qty_date_query",
+                        "sql":  "SELECT sales_entry.sales_date, sales_detail.item_id, Sum(sales_detail.qty) AS qty, item_category.cat_id, item_category.category, items.item_sft, [qty]*[items]![item_sft] AS total_sft\r\nFROM sales_entry INNER JOIN ((item_category INNER JOIN (materials INNER JOIN items ON (materials.mat_id = items.material) AND (materials.mat_id = items.material)) ON item_category.cat_id = materials.category_id) INNER JOIN sales_detail ON items.item_id = sales_detail.item_id) ON sales_entry.SEID = sales_detail.SEID\r\nGROUP BY sales_entry.sales_date, sales_detail.item_id, item_category.cat_id, item_category.category, items.item_sft, [qty]*[items]![item_sft]\r\nHAVING (((item_category.cat_id)=3));\r\n"
+                    },
+                    {
+                        "name":  "mat_query",
+                        "sql":  "SELECT materials.mat_id, materials.material_name\r\nFROM materials;\r\n"
+                    },
+                    {
+                        "name":  "opening_stock_query",
+                        "sql":  "SELECT item_category.cat_id, items.item_name, items.item_sft, items.opening_stock, [items]![opening_stock]*[item_sft] AS total_sft, materials.mat_pur_price, [total_sft]*[mat_pur_price] AS op_st_value\r\nFROM item_category INNER JOIN (materials INNER JOIN items ON (materials.mat_id = items.material) AND (materials.mat_id = items.material)) ON item_category.cat_id = materials.category_id;\r\n"
+                    },
+                    {
+                        "name":  "order_bill_query",
+                        "sql":  "SELECT order_entry.ODID, order_entry.order_date, order_entry.customer, order_entry.total_qty, order_entry.total_bill_sft, items.item_name, order_detail.qty, items.unit, ledger.lgID, ledger.ledgername, ledger.contactnumber, ledger.contactaddress, ledger.city, ledger.state, ledger.GSTNo, order_detail.total_sft\r\nFROM (ledger INNER JOIN order_entry ON ledger.lgID = order_entry.customer) INNER JOIN (items INNER JOIN order_detail ON items.item_id = order_detail.item_id) ON order_entry.ODID = order_detail.ODID;\r\n"
+                    },
+                    {
+                        "name":  "order_list_query",
+                        "sql":  "SELECT ledger.ledgername, order_entry.ODID, order_entry.order_date, order_entry.total_qty, order_entry.total_bill_sft, order_entry.material\r\nFROM ledger INNER JOIN order_entry ON ledger.lgID = order_entry.customer;\r\n"
+                    },
+                    {
+                        "name":  "order_report_query",
+                        "sql":  "SELECT order_entry.ODID, order_entry.order_date, ledger.ledgername, ledger.contactnumber, ledger.contactaddress, ledger.city, ledger.state, ledger.GSTNo, order_entry.total_qty, order_entry.total_bill_sft, order_detail.item_id, order_detail.qty\r\nFROM (ledger INNER JOIN order_entry ON ledger.lgID = order_entry.customer) INNER JOIN (items INNER JOIN order_detail ON items.item_id = order_detail.item_id) ON order_entry.ODID = order_detail.ODID;\r\n"
+                    },
+                    {
+                        "name":  "pur_qty_query",
+                        "sql":  "SELECT purchase_detail.item_id, Sum(purchase_detail.qty) AS pur_qty\r\nFROM purchase_entry INNER JOIN purchase_detail ON purchase_entry.PEID = purchase_detail.PEID\r\nGROUP BY purchase_detail.item_id;\r\n"
+                    },
+                    {
+                        "name":  "purchase_bill_query",
+                        "sql":  "SELECT purchase_entry.PEID, purchase_entry.pur_date, purchase_entry.sup_id, purchase_entry.pur_type, purchase_entry.final_total, purchase_entry.total_bill, purchase_entry.total_tax, purchase_entry.labour, purchase_entry.discount, purchase_entry.input_igst, purchase_entry.input_sgst, purchase_entry.input_cgst, purchase_entry.tax_type, purchase_entry.item_cartegory, [PEID] \u0026 [ledgername] \u0026 [pur_type]![pur_type] \u0026 [pur_tax_type] AS Search\r\nFROM pur_type INNER JOIN (pur_tax_type INNER JOIN (ledger INNER JOIN purchase_entry ON ledger.lgID = purchase_entry.sup_id) ON pur_tax_type.pur_txtype_ID = purchase_entry.tax_type) ON pur_type.purtype_ID = purchase_entry.pur_type;\r\n"
+                    },
+                    {
+                        "name":  "purchase_ledger_query",
+                        "sql":  "SELECT purchase_entry.PEID, purchase_entry.pur_date, ledger.ledgername, purchase_entry.final_total, purchase_entry.total_bill_sft, purchase_entry.item_cartegory, supplier_balance_query.balance\r\nFROM (ledger LEFT JOIN supplier_balance_query ON ledger.lgID = supplier_balance_query.lgID) INNER JOIN purchase_entry ON ledger.lgID = purchase_entry.sup_id;\r\n"
+                    },
+                    {
+                        "name":  "qry_item_sales_detail",
+                        "sql":  "SELECT sales_entry.sales_date, items.item_id, items.item_name, sales_detail.qty, sales_detail.total_sft, materials.mat_id\r\nFROM sales_entry INNER JOIN ((materials INNER JOIN items ON (materials.mat_id = items.material) AND (materials.mat_id = items.material)) INNER JOIN sales_detail ON items.item_id = sales_detail.item_id) ON sales_entry.SEID = sales_detail.SEID\r\nORDER BY sales_entry.sales_date;\r\n"
+                    },
+                    {
+                        "name":  "query_onlycash_sales",
+                        "sql":  "SELECT sales_entry.sales_date, ledger.ledgergroup, Sum(sales_entry.final_bill) AS cash\r\nFROM ledger INNER JOIN sales_entry ON ledger.lgID = sales_entry.customer_id\r\nGROUP BY sales_entry.sales_date, ledger.ledgergroup\r\nHAVING (((ledger.ledgergroup)=4));\r\n"
+                    },
+                    {
+                        "name":  "query_pur_item_qty",
+                        "sql":  "SELECT purchase_detail.item_id, Sum(purchase_detail.qty) AS purqty\r\nFROM purchase_detail\r\nGROUP BY purchase_detail.item_id;\r\n"
+                    },
+                    {
+                        "name":  "query_sale_item_qty",
+                        "sql":  "SELECT sales_detail.item_id, Sum(sales_detail.qty) AS saleqty\r\nFROM sales_detail\r\nGROUP BY sales_detail.item_id;\r\n"
+                    },
+                    {
+                        "name":  "query_sundrydebtor_sales",
+                        "sql":  "SELECT ledger.ledgergroup, Sum(ledgers_sales_query.debit) AS debtors_amount\r\nFROM ledger INNER JOIN ledgers_sales_query ON ledger.lgID = ledgers_sales_query.lgID\r\nGROUP BY ledger.ledgergroup\r\nHAVING (((ledger.ledgergroup)=3));\r\n"
+                    },
+                    {
+                        "name":  "query_total_sales",
+                        "sql":  "SELECT Count(sales_ledger_query.SEID) AS CountOfSEID, sales_ledger_query.ledgername, Sum(sales_ledger_query.final_bill) AS sales_amount\r\nFROM sales_ledger_query\r\nGROUP BY sales_ledger_query.ledgername\r\nHAVING (((sales_ledger_query.ledgername)\u003c\u003e\"2\"));\r\n"
+                    },
+                    {
+                        "name":  "Query1",
+                        "sql":  "SELECT ledger.lgID, purchase_entry.PEID, purchase_entry.pur_date, ledger.ledgername, ledger.contactnumber, purchase_entry.item_cartegory, supplier_balance_query.credit, supplier_balance_query.debit, supplier_balance_query.balance\r\nFROM (ledger LEFT JOIN supplier_balance_query ON ledger.lgID = supplier_balance_query.lgID) INNER JOIN purchase_entry ON ledger.lgID = purchase_entry.sup_id;\r\n"
+                    },
+                    {
+                        "name":  "quotation_bill_query",
+                        "sql":  "SELECT quotation_entry.QEID, quotation_entry.quot_date, quotation_entry.customer_id, quotation_entry.sale_type, quotation_entry.tax_type, quotation_entry.total_bill, quotation_entry.total_tax, quotation_entry.final_bill, quotation_entry.total_qty, quotation_entry.total_bill_sft, quotation_entry.outputsgst, quotation_entry.outputcgst, quotation_entry.outputigst, items.item_name, quotation_detail.qty, items.unit, ledger.lgID, ledger.contactnumber, ledger.contactaddress, ledger.city, ledger.state, ledger.GSTNo, quotation_detail.mat_sale_price, quotation_detail.amount, quotation_detail.tax_amount, quotation_detail.total_amount, quotation_detail.total_sft, quotation_entry.labour, quotation_entry.discount, quotation_entry.transport, quotation_entry.driver_number\r\nFROM (ledger INNER JOIN quotation_entry ON ledger.lgID = quotation_entry.customer_id) INNER JOIN (items INNER JOIN quotation_detail ON items.item_id = quotation_detail.item_id) ON quotation_entry.QEID = quotation_detail.QEID;\r\n"
+                    },
+                    {
+                        "name":  "quotation_list_query",
+                        "sql":  "SELECT quotation_entry.customer_id, quotation_entry.QEID, quotation_entry.quot_date, quotation_entry.item_category, quotation_entry.final_bill, quotation_entry.total_bill, quotation_entry.total_tax, quotation_entry.labour, quotation_entry.discount\r\nFROM ledger INNER JOIN quotation_entry ON ledger.lgID = quotation_entry.customer_id;\r\n"
+                    },
+                    {
+                        "name":  "sales_bill_query",
+                        "sql":  "SELECT items.item_name, sales_detail.qty, sales_detail.total_sft, items.unit, sales_detail.mat_sale_price, sales_detail.amount, sales_detail.tax_amount, sales_detail.total_amount, ledger.lgID, ledger.contactnumber, ledger.contactaddress, ledger.city, ledger.state, ledger.GSTNo, sales_entry.outputsgst, sales_entry.outputcgst, sales_entry.outputigst, sales_entry.customer_id, sales_entry.sale_type, sales_entry.tax_type, sales_entry.discount, sales_entry.labour, sales_entry.final_bill, sales_entry.total_bill_sft, sales_entry.total_qty, sales_entry.SEID, sales_entry.sales_date, sales_entry.transport, sales_entry.driver_number, sales_entry.total_tax, sales_entry.total_bill\r\nFROM (ledger INNER JOIN sales_entry ON ledger.lgID = sales_entry.customer_id) INNER JOIN (items INNER JOIN sales_detail ON items.item_id = sales_detail.item_id) ON sales_entry.SEID = sales_detail.SEID;\r\n"
+                    },
+                    {
+                        "name":  "sales_credit_cash_total_query",
+                        "sql":  "SELECT total_sales_query.sales_date, cash_sales_query.cash_sale, credit_sales_query.credit_sale, total_sales_query.sales_amount\r\nFROM (cash_sales_query RIGHT JOIN total_sales_query ON cash_sales_query.sales_date = total_sales_query.sales_date) LEFT JOIN credit_sales_query ON total_sales_query.sales_date = credit_sales_query.sales_date;\r\n"
+                    },
+                    {
+                        "name":  "sales_exp_query",
+                        "sql":  "SELECT total_sales_query.sales_date, total_sales_query.sales_amount, total_exp_query.expenses, Nz([sales_amount],0)-Nz([expenses],0) AS balance\r\nFROM total_exp_query RIGHT JOIN total_sales_query ON total_exp_query.pay_date = total_sales_query.sales_date;\r\n"
+                    },
+                    {
+                        "name":  "sales_list_query",
+                        "sql":  "SELECT sales_entry.SEID, sales_entry.sales_date, sales_entry.customer_id, sales_entry.tax_type, sales_entry.sale_type, sales_entry.final_bill, sales_entry.total_bill, sales_entry.total_tax, sales_entry.labour, sales_entry.discount, sales_entry.total_qty, sales_entry.total_bill_sft, item_category.category, [SEID] \u0026 [ledgername] \u0026 [sale_type]![sale_type] \u0026 [category] AS Search\r\nFROM item_category INNER JOIN (sale_type INNER JOIN (sale_tax_type INNER JOIN (ledger INNER JOIN sales_entry ON ledger.lgID = sales_entry.customer_id) ON sale_tax_type.sale_txtype_ID = sales_entry.tax_type) ON sale_type.saletype_ID = sales_entry.sale_type) ON item_category.cat_id = sales_entry.item_category\r\nORDER BY sales_entry.SEID, sales_entry.final_bill;\r\n"
+                    },
+                    {
+                        "name":  "sales_monthly_query",
+                        "sql":  "SELECT sales_entry.SEID, Format([sales_date],\"m\") AS [month], sales_entry.customer_id, sales_entry.total_qty AS qty, sales_entry.total_bill_sft AS total_sft, sales_entry.total_bill AS amount, sales_entry.total_tax AS total_tax, sales_entry.labour AS labour, sales_entry.discount AS discount, sales_entry.final_bill AS total_sales\r\nFROM sales_entry;\r\n"
+                    },
+                    {
+                        "name":  "sales_qty_query",
+                        "sql":  "SELECT sales_detail.item_id, Sum(sales_detail.qty) AS sales_qty\r\nFROM sales_detail\r\nGROUP BY sales_detail.item_id;\r\n"
+                    },
+                    {
+                        "name":  "sales_tax_type",
+                        "sql":  "SELECT sale_tax_type.sale_txtype_ID, sale_tax_type.sale_tax_type\r\nFROM sale_tax_type;\r\n"
+                    },
+                    {
+                        "name":  "salesby_cash_query",
+                        "sql":  "SELECT ledger_receipt.pay_date, ledger_receipt.pay_mode, Sum(ledger_receipt.amount) AS cash\r\nFROM ledger_receipt\r\nGROUP BY ledger_receipt.pay_date, ledger_receipt.pay_mode\r\nHAVING (((ledger_receipt.pay_mode)=1));\r\n"
+                    },
+                    {
+                        "name":  "salesreport_query",
+                        "sql":  "SELECT sales_entry.SEID, sales_entry.customer_id, ledger.GSTNo, sales_entry.sales_date, sales_entry.tax_type, sales_entry.final_bill, sales_entry.total_bill, sales_entry.outputsgst, sales_entry.outputcgst, sales_entry.outputigst, sales_entry.labour, sales_entry.discount, sales_entry.total_bill_sft, sales_entry.item_category\r\nFROM sale_tax_type INNER JOIN (ledger INNER JOIN (item_category RIGHT JOIN sales_entry ON item_category.cat_id = sales_entry.item_category) ON ledger.lgID = sales_entry.customer_id) ON sale_tax_type.sale_txtype_ID = sales_entry.tax_type\r\nORDER BY sales_entry.SEID, sales_entry.sales_date;\r\n"
+                    },
+                    {
+                        "name":  "slaes_query",
+                        "sql":  "SELECT query_sundrydebtor_sales.debtors_amount\r\nFROM query_sundrydebtor_sales;\r\n"
+                    },
+                    {
+                        "name":  "stock_in_item_total",
+                        "sql":  "SELECT stock_in.item_id, stock_in.item_name, Sum(stock_in.st_in_qty) AS st_in_qty\r\nFROM stock_in\r\nGROUP BY stock_in.item_id, stock_in.item_name;\r\n"
+                    },
+                    {
+                        "name":  "stock_out_item_total",
+                        "sql":  "SELECT stock_out.item_id, stock_out.item_name, Sum(stock_out.st_out_qty) AS st_out_qty\r\nFROM stock_out\r\nGROUP BY stock_out.item_id, stock_out.item_name;\r\n"
+                    },
+                    {
+                        "name":  "supplier_balance_query",
+                        "sql":  "SELECT ledger.lgID, ledger.ledgername, ledger.ledgergroup, ledgers_purchase_query.credit, ledgers_payment_query.debit, Nz([debit],0)-Nz([credit],0) AS balance\r\nFROM (ledger LEFT JOIN ledgers_purchase_query ON ledger.lgID = ledgers_purchase_query.lgID) LEFT JOIN ledgers_payment_query ON ledger.lgID = ledgers_payment_query.lgID\r\nWHERE (((ledger.ledgergroup)=2));\r\n"
+                    },
+                    {
+                        "name":  "total_data_details",
+                        "sql":  "SELECT ledger.lgID, ledger.ledgername, ledgers_sales_query.sales_date AS Expr1, ledgers_sales_query.credit, exp_list_query.pay_amount, contra_entry.amount\r\nFROM ((ledger LEFT JOIN exp_list_query ON ledger.lgID = exp_list_query.lgID) LEFT JOIN contra_entry ON ledger.lgID = contra_entry.ledger) INNER JOIN ledgers_sales_query ON ledger.lgID = ledgers_sales_query.lgID;\r\n"
+                    },
+                    {
+                        "name":  "total_exp_query",
+                        "sql":  "SELECT Count(ledger_payments.pay_ID) AS CountOfpay_ID, ledger_payments.pay_date, Sum(ledger_payments.pay_amount) AS expenses\r\nFROM ledger_payments\r\nGROUP BY ledger_payments.pay_date;\r\n"
+                    },
+                    {
+                        "name":  "total_pur_query",
+                        "sql":  "SELECT Count(purchase_entry.PEID) AS CountOfPEID, purchase_entry.pur_date, Sum(purchase_entry.final_total) AS purchase\r\nFROM purchase_entry\r\nGROUP BY purchase_entry.pur_date;\r\n"
+                    },
+                    {
+                        "name":  "total_receipt_query",
+                        "sql":  "SELECT Count(ledger_receipt.ID) AS CountOfID, ledger_receipt.pay_date, Sum(ledger_receipt.amount) AS amount\r\nFROM ledger_receipt\r\nGROUP BY ledger_receipt.pay_date;\r\n"
+                    },
+                    {
+                        "name":  "total_sales_query",
+                        "sql":  "SELECT Count(sales_entry.SEID) AS CountOfSEID, sales_entry.sales_date, Sum(sales_entry.final_bill) AS sales_amount\r\nFROM sales_entry\r\nGROUP BY sales_entry.sales_date;\r\n"
+                    }
+                ],
+    "forms":  [
+                  "user_registration_form",
+                  "cash_in_hand_query subform",
+                  "salesreport_query subform",
+                  "ledger_receipt_amount_query subform",
+                  "ledger_sales_amount_query subform",
+                  "indirect_exp_ledg_query subform",
+                  "ledgerform",
+                  "ledger_exp_query subform",
+                  "purchase_bill_list_subform",
+                  "sales_form",
+                  "sales_detail subform",
+                  "purchase_detail subform",
+                  "ledger_total_exp_query subform",
+                  "sales_list_query_subform",
+                  "sales_ledger_query subform",
+                  "customer_balance_form",
+                  "payment_form",
+                  "receipt_form",
+                  "customer_balance_query subform",
+                  "login_form",
+                  "total_pur_query subform",
+                  "sales_monthly_query subform",
+                  "stock_in subform",
+                  "front_page_form",
+                  "order_detail subform",
+                  "exp_list_query subform",
+                  "quotation_detail subform",
+                  "qry_item_sales_detail subform",
+                  "total_sales_query subform",
+                  "query_total_sales subform",
+                  "customer_sales_query subform",
+                  "item_selection_form",
+                  "stock_entry_form",
+                  "stock_out subform",
+                  "quotation_form",
+                  "dashboard",
+                  "item_list",
+                  "Items_Management",
+                  "itemreport_form",
+                  "order_form",
+                  "contra_entry_form",
+                  "profit_loss_form",
+                  "report_form",
+                  "purchase_form",
+                  "customer_salses_form",
+                  "trial_balance_form",
+                  "salesreport_form",
+                  "exp_list_form",
+                  "create_company_form",
+                  "purchase_bill_list",
+                  "monthly_sales_report",
+                  "sales_bill_list",
+                  "sales_display",
+                  "main_menu",
+                  "total_sales_query subform1",
+                  "sales_exp_query subform1",
+                  "balance_sheet",
+                  "ledger_balnce_form",
+                  "purchased_form",
+                  "day_book",
+                  "backup",
+                  "employeeaccess"
+              ],
+    "reports":  [
+                    "sales_bill",
+                    "total_exp_query subreport",
+                    "total_sales_query subreport",
+                    "items_list_report",
+                    "balance_sheet_report",
+                    "marble_sales_query subreport",
+                    "granite_sales_query subreport",
+                    "cudd_sales_query subreport",
+                    "exp_report",
+                    "profit_loss_form",
+                    "customer_sales_report",
+                    "purchase_ledger_report",
+                    "monthly_sales_report",
+                    "balance_report",
+                    "salesreport_details",
+                    "order",
+                    "quotation_bill"
+                ],
+    "macros":  [
+
+               ],
+    "modules":  [
+                    "Module1",
+                    "item_check",
+                    "globals",
+                    "Module2",
+                    "Module3"
+                ]
+}

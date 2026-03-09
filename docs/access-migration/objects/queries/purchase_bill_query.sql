@@ -1,0 +1,3 @@
+﻿SELECT purchase_entry.PEID, purchase_entry.pur_date, purchase_entry.sup_id, purchase_entry.pur_type, purchase_entry.final_total, purchase_entry.total_bill, purchase_entry.total_tax, purchase_entry.labour, purchase_entry.discount, purchase_entry.input_igst, purchase_entry.input_sgst, purchase_entry.input_cgst, purchase_entry.tax_type, purchase_entry.item_cartegory, [PEID] & [ledgername] & [pur_type]![pur_type] & [pur_tax_type] AS Search
+FROM pur_type INNER JOIN (pur_tax_type INNER JOIN (ledger INNER JOIN purchase_entry ON ledger.lgID = purchase_entry.sup_id) ON pur_tax_type.pur_txtype_ID = purchase_entry.tax_type) ON pur_type.purtype_ID = purchase_entry.pur_type;
+

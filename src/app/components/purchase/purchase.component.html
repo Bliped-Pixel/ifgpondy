@@ -1,0 +1,95 @@
+<div class="container">
+  <div class="header">
+    <h2>Purchase Entry</h2>
+  </div>
+
+  <div class="section">
+    <h3>Create Purchase Entry</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Supplier Name *</label>
+        <input type="text" [(ngModel)]="supplierName" placeholder="Enter supplier" />
+      </div>
+      <div class="form-group">
+        <label>Notes</label>
+        <input type="text" [(ngModel)]="notes" placeholder="Optional notes" />
+      </div>
+    </div>
+
+    <div class="item-row">
+      <select [(ngModel)]="selectedStone">
+        <option value="">Select Stone</option>
+        <option *ngFor="let stone of availableStones" [value]="stone.id">
+          {{ stone.name }} - {{ stone.type }} (₹{{ stone.pricePerUnit }}/sq-ft)
+        </option>
+      </select>
+
+      <select [(ngModel)]="selectedSizeId" [disabled]="!selectedStone">
+        <option value="">Select Size</option>
+        <option *ngFor="let size of getSizesForSelectedStone()" [value]="size.id">{{ size.dimension }}</option>
+      </select>
+
+      <input type="number" [(ngModel)]="selectedQuantity" min="1" placeholder="Qty" />
+      <button class="btn btn-primary" (click)="addItem()">Add</button>
+    </div>
+
+    <table *ngIf="items.length > 0">
+      <thead>
+        <tr>
+          <th>Stone</th>
+          <th>Size</th>
+          <th>Qty</th>
+          <th>Sq-Ft</th>
+          <th>Rate</th>
+          <th>Amount</th>
+          <th>GST</th>
+          <th>Total</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items">
+          <td>{{ item.stoneName }}</td>
+          <td>{{ item.size }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.squareFeet.toFixed(2) }}</td>
+          <td>₹{{ item.ratePerSqFt }}</td>
+          <td>₹{{ item.amount.toFixed(2) }}</td>
+          <td>₹{{ item.gstAmount.toFixed(2) }} ({{ item.gstPercentage }}%)</td>
+          <td>₹{{ item.lineTotal.toFixed(2) }}</td>
+          <td><button class="btn btn-danger" (click)="removeItem(item.id)">Delete</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="totals" *ngIf="items.length > 0">
+      <p><strong>Subtotal:</strong> ₹{{ calculateSubtotal().toFixed(2) }}</p>
+      <p><strong>GST:</strong> ₹{{ calculateGSTTotal().toFixed(2) }}</p>
+      <p><strong>Grand Total:</strong> ₹{{ calculateGrandTotal().toFixed(2) }}</p>
+      <button class="btn btn-success" (click)="savePurchaseEntry()">Save Purchase Entry</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Recent Purchase Entries</h3>
+    <table *ngIf="purchaseEntries$().length > 0">
+      <thead>
+        <tr>
+          <th>Purchase No</th>
+          <th>Supplier</th>
+          <th>Date</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let entry of purchaseEntries$()">
+          <td>{{ entry.purchaseNumber }}</td>
+          <td>{{ entry.supplierName }}</td>
+          <td>{{ entry.purchaseDate | date: 'short' }}</td>
+          <td>₹{{ entry.grandTotal.toFixed(2) }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="purchaseEntries$().length === 0">No purchase entries yet.</p>
+  </div>
+</div>
