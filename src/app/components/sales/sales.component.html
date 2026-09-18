@@ -1,99 +1,178 @@
-<div class="container">
-  <div class="header">
-    <h2>Sales Entry</h2>
-  </div>
-
-  <div class="section">
-    <h3>Create Sales Entry</h3>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Customer Name *</label>
-        <input type="text" [(ngModel)]="customerName" placeholder="Enter customer" />
-      </div>
-      <div class="form-group">
-        <label>Discount %</label>
-        <input type="number" [(ngModel)]="discountPercentage" min="0" max="100" />
-      </div>
-      <div class="form-group">
-        <label>Notes</label>
-        <input type="text" [(ngModel)]="notes" placeholder="Optional notes" />
+<div class="sales-shell">
+  <header class="sales-hero">
+    <div class="hero-copy-wrap">
+      <p class="eyebrow"><span></span> SALES / INVOICE REGISTER</p>
+      <h1>Sales, without double entry.</h1>
+      <p class="hero-copy">
+        Every completed bill appears here automatically. Totals, GST, payment status, and sold stock
+        stay connected to the original invoice.
+      </p>
+      <div class="hero-features" aria-label="Sales automation">
+        <span>Invoice sourced</span>
+        <span>Stock deducted</span>
+        <span>Live payment status</span>
       </div>
     </div>
 
-    <div class="item-row">
-      <select [(ngModel)]="selectedStone">
-        <option value="">Select Stone</option>
-        <option *ngFor="let stone of availableStones" [value]="stone.id">
-          {{ stone.name }} - {{ stone.type }} (₹{{ stone.pricePerUnit }}/sq-ft)
-        </option>
-      </select>
+    <a class="hero-action" routerLink="/billing">
+      <span aria-hidden="true">+</span>
+      Create an invoice
+    </a>
+  </header>
 
-      <select [(ngModel)]="selectedSizeId" [disabled]="!selectedStone">
-        <option value="">Select Size</option>
-        <option *ngFor="let size of getSizesForSelectedStone()" [value]="size.id">{{ size.dimension }}</option>
-      </select>
+  <section class="sales-stats" aria-label="Sales summary">
+    <article class="stat-card stat-primary">
+      <span class="stat-label">Total billed</span>
+      <strong>₹{{ totalBilled.toFixed(2) }}</strong>
+      <small>Across generated invoices</small>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">Invoices</span>
+      <strong>{{ salesEntries$().length }}</strong>
+      <small>Automatically posted sales</small>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">Paid</span>
+      <strong>{{ paidCount }}</strong>
+      <small>Invoices marked as paid</small>
+    </article>
+    <article class="stat-card" [class.stat-warning]="outstandingCount > 0">
+      <span class="stat-label">Outstanding</span>
+      <strong>{{ outstandingCount }}</strong>
+      <small>Pending or partially paid</small>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">Average sale</span>
+      <strong>₹{{ averageSale.toFixed(2) }}</strong>
+      <small>Average invoice value</small>
+    </article>
+  </section>
 
-      <input type="number" [(ngModel)]="selectedQuantity" min="1" placeholder="Qty" />
-      <button class="btn btn-primary" (click)="addItem()">Add</button>
+  <section class="sync-banner">
+    <span class="sync-icon"><i></i></span>
+    <div>
+      <strong>Billing is the sales source of truth</strong>
+      <p>Create, update payment status, or delete a bill in Billing and this register updates automatically.</p>
+    </div>
+    <a routerLink="/billing">Open billing <span aria-hidden="true">→</span></a>
+  </section>
+
+  <section class="sales-register">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="section-index">01</span>
+        <div>
+          <p class="section-kicker">LIVE SALES REGISTER</p>
+          <h2>Invoice-backed sales</h2>
+          <p>Search customers or materials and expand any bill to inspect its line items.</p>
+        </div>
+      </div>
+      <span class="record-count">{{ filteredSales.length }} record{{ filteredSales.length === 1 ? '' : 's' }}</span>
     </div>
 
-    <table *ngIf="items.length > 0">
-      <thead>
-        <tr>
-          <th>Stone</th>
-          <th>Size</th>
-          <th>Qty</th>
-          <th>Sq-Ft</th>
-          <th>Rate</th>
-          <th>Amount</th>
-          <th>GST</th>
-          <th>Total</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of items">
-          <td>{{ item.stoneName }}</td>
-          <td>{{ item.size }}</td>
-          <td>{{ item.quantity }}</td>
-          <td>{{ item.squareFeet.toFixed(2) }}</td>
-          <td>₹{{ item.ratePerSqFt }}</td>
-          <td>₹{{ item.amount.toFixed(2) }}</td>
-          <td>₹{{ item.gstAmount.toFixed(2) }} ({{ item.gstPercentage }}%)</td>
-          <td>₹{{ item.lineTotal.toFixed(2) }}</td>
-          <td><button class="btn btn-danger" (click)="removeItem(item.id)">Delete</button></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="register-toolbar">
+      <label class="search-field">
+        <span aria-hidden="true">⌕</span>
+        <input type="search" [(ngModel)]="searchTerm" placeholder="Search invoice, customer or stone..." />
+      </label>
 
-    <div class="totals" *ngIf="items.length > 0">
-      <p><strong>Subtotal:</strong> ₹{{ calculateSubtotal().toFixed(2) }}</p>
-      <p><strong>GST:</strong> ₹{{ calculateGSTTotal().toFixed(2) }}</p>
-      <p><strong>Grand Total:</strong> ₹{{ calculateGrandTotal().toFixed(2) }}</p>
-      <button class="btn btn-success" (click)="saveSalesEntry()">Save Sales Entry</button>
+      <label class="toolbar-select">
+        <span>Bill type</span>
+        <select [(ngModel)]="billTypeFilter">
+          <option value="all">All bills</option>
+          <option value="cash">Cash</option>
+          <option value="credit">Credit</option>
+        </select>
+      </label>
+
+      <label class="toolbar-select">
+        <span>Payment</span>
+        <select [(ngModel)]="paymentFilter">
+          <option value="all">All statuses</option>
+          <option value="pending">Pending</option>
+          <option value="partial">Partial</option>
+          <option value="paid">Paid</option>
+        </select>
+      </label>
+
+      <button type="button" class="clear-button" (click)="clearFilters()">Clear</button>
     </div>
-  </div>
 
-  <div class="section">
-    <h3>Recent Sales Entries</h3>
-    <table *ngIf="salesEntries$().length > 0">
-      <thead>
-        <tr>
-          <th>Bill No</th>
-          <th>Customer</th>
-          <th>Date</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let entry of salesEntries$()">
-          <td>{{ entry.billNumber }}</td>
-          <td>{{ entry.customerName }}</td>
-          <td>{{ entry.salesDate | date: 'short' }}</td>
-          <td>₹{{ entry.grandTotal.toFixed(2) }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <p *ngIf="salesEntries$().length === 0">No sales entries yet.</p>
-  </div>
+    <div class="register-table" *ngIf="filteredSales.length > 0; else noSales">
+      <table>
+        <thead>
+          <tr>
+            <th>Invoice</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Bill type</th>
+            <th>Items</th>
+            <th>Subtotal</th>
+            <th>GST</th>
+            <th>Total</th>
+            <th>Payment</th>
+            <th aria-label="Expand"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let entry of filteredSales; trackBy: trackSale">
+            <tr class="sale-row" [class.expanded]="expandedSaleId === entry.id" (click)="toggleSale(entry.id)">
+              <td><strong>{{ entry.billNumber }}</strong></td>
+              <td>
+                <span class="customer-cell"><i>{{ entry.customerName.charAt(0) | uppercase }}</i>{{ entry.customerName }}</span>
+              </td>
+              <td>{{ entry.salesDate | date:'mediumDate' }}</td>
+              <td><span class="bill-type" [class.credit]="entry.billType === 'credit'">{{ entry.billType }}</span></td>
+              <td>{{ getItemCount(entry) }} pcs · {{ entry.items.length }} line{{ entry.items.length === 1 ? '' : 's' }}</td>
+              <td>₹{{ entry.subtotal.toFixed(2) }}</td>
+              <td>₹{{ entry.gstTotal.toFixed(2) }}</td>
+              <td><strong class="total-cell">₹{{ entry.grandTotal.toFixed(2) }}</strong></td>
+              <td>
+                <span class="status-pill" [class]="'status-pill ' + entry.paymentStatus">{{ entry.paymentStatus }}</span>
+              </td>
+              <td><button type="button" class="expand-button" [attr.aria-label]="'Expand ' + entry.billNumber">⌄</button></td>
+            </tr>
+            <tr class="detail-row" *ngIf="expandedSaleId === entry.id">
+              <td colspan="10">
+                <div class="sale-detail">
+                  <div class="detail-heading">
+                    <div>
+                      <span>INVOICE ITEMS</span>
+                      <strong>{{ entry.billNumber }} · {{ entry.customerName }}</strong>
+                    </div>
+                    <span *ngIf="entry.discountPercentage > 0" class="discount-chip">
+                      {{ entry.discountPercentage }}% discount · −₹{{ entry.discountAmount.toFixed(2) }}
+                    </span>
+                  </div>
+                  <div class="line-items">
+                    <div class="line-item" *ngFor="let item of entry.items">
+                      <div>
+                        <strong>{{ item.stoneName }}</strong>
+                        <span>{{ item.stoneType }} · {{ item.size }} ft</span>
+                      </div>
+                      <span>{{ item.quantity }} pcs</span>
+                      <span>{{ item.squareFeet.toFixed(2) }} ft²</span>
+                      <span>₹{{ item.ratePerSqFt }}/ft²</span>
+                      <strong>₹{{ item.lineTotal.toFixed(2) }}</strong>
+                    </div>
+                  </div>
+                  <p class="sale-note" *ngIf="entry.notes"><strong>Note:</strong> {{ entry.notes }}</p>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #noSales>
+      <div class="empty-state">
+        <span aria-hidden="true">◇</span>
+        <strong>{{ salesEntries$().length === 0 ? 'No billed sales yet' : 'No sales match these filters' }}</strong>
+        <p>{{ salesEntries$().length === 0 ? 'Create an invoice and it will appear here automatically.' : 'Clear the filters to see the full register.' }}</p>
+        <a *ngIf="salesEntries$().length === 0" routerLink="/billing">Create first invoice</a>
+        <button *ngIf="salesEntries$().length > 0" type="button" (click)="clearFilters()">Clear filters</button>
+      </div>
+    </ng-template>
+  </section>
 </div>

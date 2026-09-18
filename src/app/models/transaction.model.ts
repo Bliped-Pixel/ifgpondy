@@ -15,7 +15,10 @@ export interface TransactionItem {
 
 export interface SalesEntry {
   id: string;
+  sourceInvoiceId: string;
   billNumber: string;
+  billType: 'cash' | 'credit';
+  paymentStatus: 'pending' | 'paid' | 'partial';
   customerName: string;
   salesDate: Date;
   items: TransactionItem[];

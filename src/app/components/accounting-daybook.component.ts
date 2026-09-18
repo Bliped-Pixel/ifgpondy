@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BillingService } from '../services/billing.service';
 import { TransactionService } from '../services/transaction.service';
 
-type JournalSource = 'sales' | 'purchase' | 'receipt' | 'payment' | 'contra' | 'invoice';
+type JournalSource = 'sales' | 'purchase' | 'receipt' | 'payment' | 'contra';
 type FilterSource = JournalSource | 'all';
 
 interface JournalEntry {
@@ -48,7 +47,6 @@ interface LedgerSummary {
             <option value="receipt">Receipt</option>
             <option value="payment">Payment</option>
             <option value="contra">Contra</option>
-            <option value="invoice">Invoice</option>
           </select>
         </label>
 
@@ -234,7 +232,6 @@ interface LedgerSummary {
 })
 export class AccountingDaybookComponent {
   private readonly transactionService = inject(TransactionService);
-  private readonly billingService = inject(BillingService);
 
   readonly sourceFilter = signal<FilterSource>('all');
   readonly fromDate = signal('');
@@ -283,19 +280,7 @@ export class AccountingDaybookComponent {
       };
     });
 
-    const invoices = this.billingService.invoices$().map(invoice => ({
-      id: `invoice-${invoice.id}`,
-      date: new Date(invoice.invoiceDate),
-      refNo: invoice.invoiceNumber,
-      source: 'invoice' as const,
-      ledger: invoice.billType === 'credit' ? 'Sundry Debtors A/C' : 'Cash A/C',
-      party: invoice.customerName,
-      debit: 0,
-      credit: invoice.total,
-      narration: `${invoice.billType.toUpperCase()} bill created`
-    }));
-
-    return [...sales, ...purchases, ...vouchers, ...invoices].sort(
+    return [...sales, ...purchases, ...vouchers].sort(
       (a, b) => b.date.getTime() - a.date.getTime()
     );
   });

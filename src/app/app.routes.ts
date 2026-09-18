@@ -6,7 +6,6 @@ import { HomeComponent } from './components/home.component';
 import { LegacyRebuildComponent } from './components/legacy-rebuild.component';
 import { SalesComponent } from './components/sales/sales.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
-import { AccountingVouchersComponent } from './components/accounting-vouchers.component';
 import { AccountingDaybookComponent } from './components/accounting-daybook.component';
 import { AccountingReportsComponent } from './components/accounting-reports.component';
 
@@ -16,7 +15,7 @@ export const routes: Routes = [
   { path: 'billing', component: BillingComponent },
   { path: 'sales', component: SalesComponent },
   { path: 'purchase', component: PurchaseComponent },
-  { path: 'vouchers', component: AccountingVouchersComponent },
+  { path: 'vouchers', redirectTo: 'accounts' },
   { path: 'accounts', component: AccountingDaybookComponent },
   { path: 'accounts-reports', component: AccountingReportsComponent },
   { path: 'catalog', component: CatalogComponent },

@@ -1,95 +1,240 @@
-<div class="container">
-  <div class="header">
-    <h2>Purchase Entry</h2>
-  </div>
-
-  <div class="section">
-    <h3>Create Purchase Entry</h3>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Supplier Name *</label>
-        <input type="text" [(ngModel)]="supplierName" placeholder="Enter supplier" />
-      </div>
-      <div class="form-group">
-        <label>Notes</label>
-        <input type="text" [(ngModel)]="notes" placeholder="Optional notes" />
+<div class="purchase-shell">
+  <header class="purchase-hero">
+    <div class="hero-copy-wrap">
+      <p class="eyebrow"><span></span> PURCHASES / STOCK REFILLS</p>
+      <h1>Refill stock. Record what matters.</h1>
+      <p class="hero-copy">
+        Small corrections can update inventory quietly. Major refills create a supplier purchase entry
+        automatically, keeping stock and accounts aligned.
+      </p>
+      <div class="hero-features" aria-label="Purchase capabilities">
+        <span>Smart tracking</span>
+        <span>Atomic stock updates</span>
+        <span>Individual or batch</span>
       </div>
     </div>
+    <div class="threshold-card">
+      <span>MAJOR REFILL RULE</span>
+      <strong>{{ majorRefillThreshold }}+ <small>pieces</small></strong>
+      <p>Purchase register required</p>
+    </div>
+  </header>
 
-    <div class="item-row">
-      <select [(ngModel)]="selectedStone">
-        <option value="">Select Stone</option>
-        <option *ngFor="let stone of availableStones" [value]="stone.id">
-          {{ stone.name }} - {{ stone.type }} (₹{{ stone.pricePerUnit }}/sq-ft)
-        </option>
-      </select>
+  <section class="purchase-stats" aria-label="Purchase summary">
+    <article class="stat-card stat-primary">
+      <span class="stat-label">Recorded purchases</span>
+      <strong>{{ purchaseEntries$().length }}</strong>
+      <small>Supplier-backed stock entries</small>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">Purchase spend</span>
+      <strong>₹{{ totalPurchaseSpend.toFixed(2) }}</strong>
+      <small>Including recorded GST</small>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">Recorded stock</span>
+      <strong>{{ recordedPieces }}</strong>
+      <small>Pieces from purchase entries</small>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">Suppliers</span>
+      <strong>{{ supplierCount }}</strong>
+      <small>In the purchase register</small>
+    </article>
+  </section>
 
-      <select [(ngModel)]="selectedSizeId" [disabled]="!selectedStone">
-        <option value="">Select Size</option>
-        <option *ngFor="let size of getSizesForSelectedStone()" [value]="size.id">{{ size.dimension }}</option>
-      </select>
+  <section class="tracking-policy">
+    <span class="policy-icon" aria-hidden="true">10+</span>
+    <div>
+      <strong>Smart tracking is on by default</strong>
+      <p>Refills below {{ majorRefillThreshold }} pieces update stock only. Larger refills must include supplier and cost details.</p>
+    </div>
+    <span class="policy-tag">NO MISSED MAJOR PURCHASES</span>
+  </section>
 
-      <input type="number" [(ngModel)]="selectedQuantity" min="1" placeholder="Qty" />
-      <button class="btn btn-primary" (click)="addItem()">Add</button>
+  <section class="refill-workspace">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="section-index">01</span>
+        <div>
+          <p class="section-kicker">STOCK INTAKE</p>
+          <h2>Build a refill</h2>
+          <p>Add one material for a quick update, or combine several items from the same supplier.</p>
+        </div>
+      </div>
+      <button type="button" class="reset-button" (click)="resetDraft()">Reset draft</button>
     </div>
 
-    <table *ngIf="items.length > 0">
-      <thead>
-        <tr>
-          <th>Stone</th>
-          <th>Size</th>
-          <th>Qty</th>
-          <th>Sq-Ft</th>
-          <th>Rate</th>
-          <th>Amount</th>
-          <th>GST</th>
-          <th>Total</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of items">
-          <td>{{ item.stoneName }}</td>
-          <td>{{ item.size }}</td>
-          <td>{{ item.quantity }}</td>
-          <td>{{ item.squareFeet.toFixed(2) }}</td>
-          <td>₹{{ item.ratePerSqFt }}</td>
-          <td>₹{{ item.amount.toFixed(2) }}</td>
-          <td>₹{{ item.gstAmount.toFixed(2) }} ({{ item.gstPercentage }}%)</td>
-          <td>₹{{ item.lineTotal.toFixed(2) }}</td>
-          <td><button class="btn btn-danger" (click)="removeItem(item.id)">Delete</button></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="totals" *ngIf="items.length > 0">
-      <p><strong>Subtotal:</strong> ₹{{ calculateSubtotal().toFixed(2) }}</p>
-      <p><strong>GST:</strong> ₹{{ calculateGSTTotal().toFixed(2) }}</p>
-      <p><strong>Grand Total:</strong> ₹{{ calculateGrandTotal().toFixed(2) }}</p>
-      <button class="btn btn-success" (click)="savePurchaseEntry()">Save Purchase Entry</button>
+    <div class="purchase-meta">
+      <label class="field field-grow">
+        <span>Supplier</span>
+        <input type="text" [(ngModel)]="supplierName" placeholder="Required for recorded purchases" />
+      </label>
+      <label class="field">
+        <span>Purchase date</span>
+        <input type="date" [(ngModel)]="purchaseDate" />
+      </label>
+      <label class="field field-grow">
+        <span>Reference / notes</span>
+        <input type="text" [(ngModel)]="notes" placeholder="Supplier bill, vehicle or delivery note..." />
+      </label>
     </div>
-  </div>
 
-  <div class="section">
-    <h3>Recent Purchase Entries</h3>
-    <table *ngIf="purchaseEntries$().length > 0">
-      <thead>
-        <tr>
-          <th>Purchase No</th>
-          <th>Supplier</th>
-          <th>Date</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let entry of purchaseEntries$()">
-          <td>{{ entry.purchaseNumber }}</td>
-          <td>{{ entry.supplierName }}</td>
-          <td>{{ entry.purchaseDate | date: 'short' }}</td>
-          <td>₹{{ entry.grandTotal.toFixed(2) }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <p *ngIf="purchaseEntries$().length === 0">No purchase entries yet.</p>
-  </div>
+    <div class="posting-mode">
+      <div class="mode-heading">
+        <span>Posting rule</span>
+        <small>Major refills always override to purchase tracking.</small>
+      </div>
+      <div class="mode-options">
+        <button type="button" [class.active]="postingMode === 'auto'" (click)="postingMode = 'auto'">
+          <i></i><span><strong>Smart tracking</strong><small>Minor: stock only · Major: purchase</small></span>
+        </button>
+        <button type="button" [class.active]="postingMode === 'purchase'" (click)="postingMode = 'purchase'">
+          <i></i><span><strong>Always record</strong><small>Create a purchase entry at any quantity</small></span>
+        </button>
+        <button type="button" [class.active]="postingMode === 'stock-only'" (click)="postingMode = 'stock-only'">
+          <i></i><span><strong>Stock only</strong><small>Allowed only below {{ majorRefillThreshold }} pieces</small></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="item-composer">
+      <div class="composer-heading">
+        <div>
+          <p class="section-kicker">ADD REFILL ITEM</p>
+          <h3>Material and quantity</h3>
+        </div>
+        <span>{{ stones$().length }} materials available</span>
+      </div>
+
+      <div class="composer-grid">
+        <label class="field material-field">
+          <span>Material</span>
+          <select [(ngModel)]="selectedStone" (ngModelChange)="onStoneSelectionChange()">
+            <option value="">Select stone</option>
+            <option *ngFor="let stone of stones$()" [value]="stone.id">
+              {{ stone.name }} · {{ stone.type }} · {{ stone.stockQuantity }} in stock
+            </option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Size</span>
+          <select [(ngModel)]="selectedSizeId" [disabled]="!selectedStone">
+            <option value="">Select size</option>
+            <option *ngFor="let size of getSizesForSelectedStone()" [value]="size.id">
+              {{ size.dimension }} · currently {{ size.quantity }}
+            </option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Quantity</span>
+          <input type="number" min="1" [(ngModel)]="selectedQuantity" />
+        </label>
+
+        <label class="field">
+          <span>Purchase cost / ft²</span>
+          <div class="money-input"><span>₹</span><input type="number" min="0" [(ngModel)]="selectedUnitCost" placeholder="0" /></div>
+        </label>
+
+        <button type="button" class="add-item-button" (click)="addItem()"><span>+</span> Add refill</button>
+      </div>
+    </div>
+
+    <div class="draft-layout">
+      <div class="draft-items">
+        <div class="draft-heading">
+          <div>
+            <span>REFILL DRAFT</span>
+            <strong>{{ items.length }} line{{ items.length === 1 ? '' : 's' }} · {{ totalRefillQuantity }} pieces</strong>
+          </div>
+          <small>Costs can be adjusted before posting.</small>
+        </div>
+
+        <div class="draft-list" *ngIf="items.length > 0; else emptyDraft">
+          <div class="draft-item" *ngFor="let item of items; let index = index">
+            <span class="line-number">{{ index + 1 }}</span>
+            <div class="item-name">
+              <strong>{{ item.stoneName }}</strong>
+              <span>{{ item.stoneType }} · {{ item.size }}</span>
+            </div>
+            <div class="item-value"><span>Qty</span><strong>{{ item.quantity }}</strong></div>
+            <div class="item-value"><span>Area</span><strong>{{ item.squareFeet.toFixed(2) }} ft²</strong></div>
+            <label class="cost-editor">
+              <span>Cost / ft²</span>
+              <div><i>₹</i><input type="number" min="0" [ngModel]="item.ratePerSqFt" (ngModelChange)="updateItemCost(item, $event)" /></div>
+            </label>
+            <div class="item-total"><span>With GST</span><strong>₹{{ item.lineTotal.toFixed(2) }}</strong></div>
+            <button type="button" class="remove-item" (click)="removeItem(item.id)" aria-label="Remove refill item">×</button>
+          </div>
+        </div>
+
+        <ng-template #emptyDraft>
+          <div class="empty-draft"><span aria-hidden="true">◇</span><div><strong>No refill items yet</strong><small>Select a material and size above.</small></div></div>
+        </ng-template>
+      </div>
+
+      <aside class="posting-summary" [class.major]="requiresPurchaseRecord">
+        <div class="decision-badge">
+          <span>{{ willCreatePurchaseRecord ? 'PURCHASE + STOCK' : 'STOCK ONLY' }}</span>
+          <strong>{{ requiresPurchaseRecord ? 'Major refill' : 'Minor refill' }}</strong>
+        </div>
+        <p class="tracking-message">{{ trackingMessage }}</p>
+
+        <div class="summary-line"><span>Pieces</span><strong>{{ totalRefillQuantity }}</strong></div>
+        <div class="summary-line"><span>Subtotal</span><strong>₹{{ calculateSubtotal().toFixed(2) }}</strong></div>
+        <div class="summary-line"><span>GST</span><strong>₹{{ calculateGSTTotal().toFixed(2) }}</strong></div>
+        <div class="grand-total"><span>Purchase total</span><strong>₹{{ calculateGrandTotal().toFixed(2) }}</strong></div>
+
+        <button type="button" class="post-button" [disabled]="items.length === 0" (click)="saveRefill()">
+          {{ willCreatePurchaseRecord ? 'Post purchase & refill' : 'Apply stock refill' }}
+          <span aria-hidden="true">→</span>
+        </button>
+      </aside>
+    </div>
+
+    <div class="form-feedback error" *ngIf="formError" aria-live="polite"><span>!</span>{{ formError }}</div>
+    <div class="form-feedback success" *ngIf="successMessage" aria-live="polite"><span>✓</span>{{ successMessage }}</div>
+  </section>
+
+  <section class="purchase-history">
+    <div class="history-header">
+      <div class="section-title">
+        <span class="section-index">02</span>
+        <div>
+          <p class="section-kicker">PURCHASE REGISTER</p>
+          <h2>Recorded supplier purchases</h2>
+          <p>Only tracked refills appear here; minor stock-only corrections stay out of the ledger.</p>
+        </div>
+      </div>
+      <label class="history-search"><span aria-hidden="true">⌕</span><input type="search" [(ngModel)]="historySearch" placeholder="Search supplier, number or stone..." /></label>
+    </div>
+
+    <div class="history-table" *ngIf="filteredPurchases.length > 0; else noPurchases">
+      <table>
+        <thead><tr><th>Purchase</th><th>Supplier</th><th>Date</th><th>Items</th><th>Pieces</th><th>Subtotal</th><th>GST</th><th>Total</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let entry of filteredPurchases; trackBy: trackPurchase">
+            <td><strong>{{ entry.purchaseNumber }}</strong></td>
+            <td>{{ entry.supplierName }}</td>
+            <td>{{ entry.purchaseDate | date:'mediumDate' }}</td>
+            <td>{{ entry.items.length }} line{{ entry.items.length === 1 ? '' : 's' }}</td>
+            <td>{{ getEntryPieces(entry) }}</td>
+            <td>₹{{ entry.subtotal.toFixed(2) }}</td>
+            <td>₹{{ entry.gstTotal.toFixed(2) }}</td>
+            <td><strong class="table-total">₹{{ entry.grandTotal.toFixed(2) }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #noPurchases>
+      <div class="empty-history">
+        <span aria-hidden="true">◇</span>
+        <strong>{{ purchaseEntries$().length === 0 ? 'No recorded purchases yet' : 'No purchases match this search' }}</strong>
+        <p>Post a major refill or choose “Always record” to create the first purchase entry.</p>
+      </div>
+    </ng-template>
+  </section>
 </div>

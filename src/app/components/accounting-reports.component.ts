@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BillingService } from '../services/billing.service';
 import { TransactionService } from '../services/transaction.service';
 
 type ReportTab = 'trial-balance' | 'profit-loss' | 'balance-sheet';
@@ -13,7 +12,7 @@ const COMPANY = {
   email: 'ifgpondy@gmail.com'
 };
 
-type EntrySource = 'sales' | 'purchase' | 'receipt' | 'payment' | 'contra' | 'invoice';
+type EntrySource = 'sales' | 'purchase' | 'receipt' | 'payment' | 'contra';
 
 interface JournalEntry {
   source: EntrySource;
@@ -328,7 +327,6 @@ interface LedgerNetBalance {
 })
 export class AccountingReportsComponent {
   private readonly transactionService = inject(TransactionService);
-  private readonly billingService = inject(BillingService);
 
   readonly activeTab = signal<ReportTab>('trial-balance');
 
@@ -374,14 +372,7 @@ export class AccountingReportsComponent {
       };
     });
 
-    const invoices = this.billingService.invoices$().map(invoice => ({
-      source: 'invoice' as const,
-      ledger: invoice.billType === 'credit' ? 'Sundry Debtors A/C' : 'Cash A/C',
-      debit: invoice.total,
-      credit: 0
-    }));
-
-    return [...sales, ...purchases, ...vouchers, ...invoices];
+    return [...sales, ...purchases, ...vouchers];
   });
 
   readonly trialBalanceRows = computed<TrialBalanceRow[]>(() => {

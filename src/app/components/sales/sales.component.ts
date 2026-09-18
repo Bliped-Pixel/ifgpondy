@@ -1,146 +1,81 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BillingService } from '../../services/billing.service';
-import { InventoryService } from '../../services/inventory.service';
+import { RouterLink } from '@angular/router';
+import { SalesEntry } from '../../models/transaction.model';
 import { TransactionService } from '../../services/transaction.service';
-import { Stone, StoneSize } from '../../models/stone.model';
-import { TransactionItem } from '../../models/transaction.model';
 
 @Component({
   selector: 'app-sales',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './sales.component.html',
   styleUrls: ['./sales.component.css']
 })
 export class SalesComponent {
-  availableStones: Stone[] = [];
-  salesEntries$;
+  readonly salesEntries$;
 
-  customerName = '';
-  discountPercentage = 0;
-  notes = '';
+  searchTerm = '';
+  billTypeFilter: 'all' | 'cash' | 'credit' = 'all';
+  paymentFilter: 'all' | 'pending' | 'paid' | 'partial' = 'all';
+  expandedSaleId: string | null = null;
 
-  selectedStone = '';
-  selectedSizeId = '';
-  selectedQuantity = 1;
-
-  items: TransactionItem[] = [];
-
-  constructor(
-    private transactionService: TransactionService,
-    private inventoryService: InventoryService,
-    private billingService: BillingService
-  ) {
+  constructor(private transactionService: TransactionService) {
     this.salesEntries$ = this.transactionService.salesEntries$;
-    this.availableStones = this.inventoryService.getAvailableStones();
   }
 
-  getSizesForSelectedStone(): StoneSize[] {
-    const stone = this.inventoryService.getStone(this.selectedStone);
-    return stone ? stone.sizes : [];
-  }
+  get filteredSales(): SalesEntry[] {
+    const query = this.searchTerm.trim().toLowerCase();
 
-  addItem(): void {
-    const stone = this.inventoryService.getStone(this.selectedStone);
-    const size = this.getSizesForSelectedStone().find(item => item.id === this.selectedSizeId);
+    return this.salesEntries$().filter(entry => {
+      const matchesSearch =
+        !query ||
+        entry.billNumber.toLowerCase().includes(query) ||
+        entry.customerName.toLowerCase().includes(query) ||
+        entry.items.some(
+          item =>
+            item.stoneName.toLowerCase().includes(query) ||
+            item.stoneType.toLowerCase().includes(query)
+        );
+      const matchesBillType = this.billTypeFilter === 'all' || entry.billType === this.billTypeFilter;
+      const matchesPayment = this.paymentFilter === 'all' || entry.paymentStatus === this.paymentFilter;
 
-    if (!stone || !size || this.selectedQuantity <= 0) {
-      alert('Select stone, size and valid quantity.');
-      return;
-    }
-
-    const availability = this.inventoryService.getCuttingAvailability(
-      stone.id,
-      size.dimension,
-      this.selectedQuantity
-    );
-
-    if (!availability.canDeliver) {
-      alert(`Cannot deliver requested quantity. Shortage: ${availability.shortage}.`);
-      return;
-    }
-
-    const squareFeet = this.calculateSquareFeet(size.dimension, this.selectedQuantity);
-    const amount = squareFeet * stone.pricePerUnit;
-    const gstPercentage = this.billingService.getGSTPercentageForStoneType(stone.type);
-    const gstAmount = (amount * gstPercentage) / 100;
-
-    this.items.push({
-      id: Date.now().toString(),
-      stoneId: stone.id,
-      stoneName: stone.name,
-      stoneType: stone.type,
-      size: size.dimension,
-      quantity: this.selectedQuantity,
-      squareFeet,
-      ratePerSqFt: stone.pricePerUnit,
-      amount,
-      gstPercentage,
-      gstAmount,
-      lineTotal: amount + gstAmount
+      return matchesSearch && matchesBillType && matchesPayment;
     });
-
-    this.selectedStone = '';
-    this.selectedSizeId = '';
-    this.selectedQuantity = 1;
   }
 
-  removeItem(itemId: string): void {
-    this.items = this.items.filter(item => item.id !== itemId);
+  get totalBilled(): number {
+    return this.salesEntries$().reduce((total, entry) => total + entry.grandTotal, 0);
   }
 
-  saveSalesEntry(): void {
-    const result = this.transactionService.createSalesEntry(
-      this.customerName,
-      this.items,
-      this.discountPercentage,
-      this.notes
-    );
-
-    if (!result.success) {
-      alert(result.message);
-      return;
-    }
-
-    alert(`Sales entry created: ${result.data?.billNumber}`);
-    this.customerName = '';
-    this.discountPercentage = 0;
-    this.notes = '';
-    this.items = [];
-    this.availableStones = this.inventoryService.getAvailableStones();
+  get paidCount(): number {
+    return this.salesEntries$().filter(entry => entry.paymentStatus === 'paid').length;
   }
 
-  calculateSubtotal(): number {
-    return this.items.reduce((sum, item) => sum + item.amount, 0);
+  get outstandingCount(): number {
+    return this.salesEntries$().filter(entry => entry.paymentStatus !== 'paid').length;
   }
 
-  calculateGSTTotal(): number {
-    return this.items.reduce((sum, item) => sum + item.gstAmount, 0);
+  get averageSale(): number {
+    const entries = this.salesEntries$();
+    return entries.length > 0 ? this.totalBilled / entries.length : 0;
   }
 
-  calculateGrandTotal(): number {
-    const subtotal = this.calculateSubtotal();
-    const discountAmount = (subtotal * this.discountPercentage) / 100;
-    return subtotal - discountAmount + this.calculateGSTTotal();
+  getItemCount(entry: SalesEntry): number {
+    return entry.items.reduce((total, item) => total + item.quantity, 0);
   }
 
-  private calculateSquareFeet(size: string, quantity: number): number {
-    const dimensions = size
-      .toLowerCase()
-      .split('x')
-      .map(value => Number(value.trim()));
+  toggleSale(entryId: string): void {
+    this.expandedSaleId = this.expandedSaleId === entryId ? null : entryId;
+  }
 
-    if (dimensions.length !== 2 || dimensions.some(value => Number.isNaN(value) || value <= 0)) {
-      return quantity;
-    }
+  clearFilters(): void {
+    this.searchTerm = '';
+    this.billTypeFilter = 'all';
+    this.paymentFilter = 'all';
+  }
 
-    const [length, width] = dimensions;
-    const isInches = length > 10 || width > 10;
-    const lengthInFeet = isInches ? length / 12 : length;
-    const widthInFeet = isInches ? width / 12 : width;
-
-    return lengthInFeet * widthInFeet * quantity;
+  trackSale(_index: number, entry: SalesEntry): string {
+    return entry.id;
   }
 }

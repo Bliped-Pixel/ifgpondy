@@ -1,205 +1,436 @@
-<div class="container">
-  <div class="header">
-    <h2>Inventory Management</h2>
-    <div class="header-actions">
-      <button (click)="downloadBulkTemplate()" class="btn btn-secondary">Download Upload Template</button>
-      <button (click)="openForm()" class="btn btn-primary">+ Add New Stone</button>
-    </div>
-  </div>
-
-  <div class="bulk-upload-section">
-    <h3>Bulk Upload Stocks</h3>
-    <p>Fill the template in Excel and upload the CSV file here.</p>
-    <input type="file" accept=".csv" (change)="handleBulkUpload($event)" />
-    <p *ngIf="bulkUploadSummary" class="bulk-summary">{{ bulkUploadSummary }}</p>
-  </div>
-
-  <!-- Low Stock Alert -->
-  <div *ngIf="getLowStockStones().length > 0" class="alert alert-warning">
-    <strong>⚠️ Low Stock Alert:</strong>
-    {{ getLowStockStones().length }} items are running low on stock.
-  </div>
-
-  <!-- Form Section -->
-  <div *ngIf="showForm" class="form-section">
-    <div class="form-header">
-      <h3>{{ editingStoneId ? 'Edit Stone' : 'Add New Stone' }}</h3>
-      <button (click)="cancelForm()" class="btn-close">✕</button>
+<div class="inventory-shell">
+  <header class="inventory-hero">
+    <div class="hero-copy-wrap">
+      <p class="eyebrow"><span></span> INVENTORY / MATERIAL CONTROL</p>
+      <h1>Stock, clearly organized.</h1>
+      <p class="hero-copy">
+        Add materials one at a time or update the full yard from an Excel-ready CSV template.
+        Size-level quantities remain connected to cutting availability.
+      </p>
+      <div class="hero-features" aria-label="Inventory capabilities">
+        <span>Size-wise stock</span>
+        <span>Bulk updates</span>
+        <span>Cut planning</span>
+      </div>
     </div>
 
-    <form (ngSubmit)="saveStone()" class="form">
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Stone Name *</label>
-          <input type="text" [(ngModel)]="formData.name" name="name" required />
+    <div class="hero-actions">
+      <button type="button" class="button button-light" (click)="downloadBulkTemplate()">
+        <span aria-hidden="true">↓</span>
+        Excel-ready template
+      </button>
+      <button type="button" class="button button-copper" (click)="openForm()">
+        <span aria-hidden="true">+</span>
+        Add material
+      </button>
+    </div>
+  </header>
+
+  <section class="inventory-stats" aria-label="Inventory summary">
+    <article class="stat-card stat-primary">
+      <span class="stat-label">Materials</span>
+      <strong>{{ stones$().length }}</strong>
+      <small>Stone variants on record</small>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">Total stock</span>
+      <strong>{{ totalStockUnits }}</strong>
+      <small>Pieces across the yard</small>
+    </article>
+    <article class="stat-card" [class.stat-warning]="getLowStockStones().length > 0">
+      <span class="stat-label">Low stock</span>
+      <strong>{{ getLowStockStones().length }}</strong>
+      <small>At or below {{ lowStockThreshold }} pieces</small>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">Suppliers</span>
+      <strong>{{ supplierCount }}</strong>
+      <small>Active supply sources</small>
+    </article>
+  </section>
+
+  <section class="intake-grid">
+    <article class="intake-card bulk-intake-card">
+      <div class="section-heading compact">
+        <div class="section-index">01</div>
+        <div>
+          <p class="section-kicker">BULK INTAKE</p>
+          <h2>Update stock from Excel</h2>
+          <p>Save the completed template as CSV, then drop it here. Matching name + type rows are updated.</p>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label>Type *</label>
+      <label
+        class="upload-dropzone"
+        [class.dragging]="isBulkDragging"
+        for="bulkStockFile"
+        (dragover)="onBulkDragOver($event)"
+        (dragleave)="onBulkDragLeave($event)"
+        (drop)="onBulkDrop($event)"
+      >
+        <input
+          id="bulkStockFile"
+          type="file"
+          accept=".csv,text/csv"
+          (change)="handleBulkUpload($event)"
+        />
+        <span class="upload-icon" aria-hidden="true">CSV</span>
+        <span class="upload-copy">
+          <strong>Drop your completed stock sheet here</strong>
+          <small>or choose a CSV file from your computer</small>
+        </span>
+        <span class="upload-cta">Choose file</span>
+      </label>
+
+      <div class="upload-feedback success" *ngIf="bulkUploadSummary" aria-live="polite">
+        <span aria-hidden="true">✓</span>
+        <div>
+          <strong>{{ bulkUploadFileName || 'Inventory sheet' }}</strong>
+          <small>{{ bulkUploadSummary }}</small>
+        </div>
+      </div>
+      <div class="upload-feedback error" *ngIf="bulkUploadError" aria-live="polite">
+        <span aria-hidden="true">!</span>
+        <div>
+          <strong>{{ bulkUploadFileName || 'Upload could not be completed' }}</strong>
+          <small>{{ bulkUploadError }}</small>
+        </div>
+      </div>
+    </article>
+
+    <aside class="intake-card import-guide">
+      <p class="section-kicker">A CLEAN IMPORT IN 3 STEPS</p>
+      <ol>
+        <li>
+          <span>1</span>
+          <div><strong>Download</strong><small>Open the template directly in Excel.</small></div>
+        </li>
+        <li>
+          <span>2</span>
+          <div><strong>Fill stock</strong><small>One material per row, with quantities by size.</small></div>
+        </li>
+        <li>
+          <span>3</span>
+          <div><strong>Upload CSV</strong><small>New rows are created and matching rows updated.</small></div>
+        </li>
+      </ol>
+      <button type="button" class="template-link" (click)="downloadBulkTemplate()">
+        Download a fresh template <span aria-hidden="true">→</span>
+      </button>
+    </aside>
+  </section>
+
+  <div *ngIf="getLowStockStones().length > 0" class="stock-alert" role="status">
+    <span class="alert-icon" aria-hidden="true">!</span>
+    <div>
+      <strong>{{ getLowStockStones().length }} material{{ getLowStockStones().length === 1 ? '' : 's' }} need attention</strong>
+      <p>Review low-stock items before confirming new cutting or sales orders.</p>
+    </div>
+    <button type="button" (click)="inventoryStockFilter = 'low'">Show low stock</button>
+  </div>
+
+  <section *ngIf="showForm" class="material-form-panel">
+    <div class="form-panel-header">
+      <div class="section-heading compact">
+        <div class="section-index">{{ editingStoneId ? 'EDIT' : '02' }}</div>
+        <div>
+          <p class="section-kicker">MANUAL INTAKE</p>
+          <h2>{{ editingStoneId ? 'Update material' : 'Add a new material' }}</h2>
+          <p>Record the product details, then allocate stock across its available sizes.</p>
+        </div>
+      </div>
+      <button type="button" class="icon-button" (click)="cancelForm()" aria-label="Close material form">×</button>
+    </div>
+
+    <form (ngSubmit)="saveStone()" class="material-form">
+      <div class="form-grid">
+        <label class="field field-wide">
+          <span>Stone name *</span>
+          <input type="text" [(ngModel)]="formData.name" name="name" placeholder="e.g. Absolute Black Granite" required />
+        </label>
+
+        <label class="field">
+          <span>Material type *</span>
           <select [(ngModel)]="formData.type" name="type" required>
-            <option value="">Select Type</option>
+            <option value="">Select material</option>
             <option value="Granite">Granite</option>
             <option value="Marble">Marble</option>
+            <option value="Cuddapah">Cuddapah</option>
             <option value="Sandstone">Sandstone</option>
             <option value="Limestone">Limestone</option>
             <option value="Slate">Slate</option>
+            <option value="Quartzite">Quartzite</option>
           </select>
-        </div>
+        </label>
 
-        <div class="form-group">
-          <label>Color</label>
-          <input type="text" [(ngModel)]="formData.color" name="color" />
-        </div>
+        <label class="field">
+          <span>Primary color</span>
+          <input type="text" [(ngModel)]="formData.color" name="color" placeholder="e.g. Black" />
+        </label>
 
-        <div class="form-group">
-          <label>Price Per Unit (₹)</label>
-          <input type="number" [(ngModel)]="formData.pricePerUnit" name="pricePerUnit" />
-        </div>
+        <label class="field">
+          <span>Rate per ft² (₹)</span>
+          <input type="number" min="0" [(ngModel)]="formData.pricePerUnit" name="pricePerUnit" placeholder="0" />
+        </label>
 
-        <div class="form-group">
-          <label>Stock Quantity</label>
-          <input type="number" [(ngModel)]="formData.stockQuantity" name="stockQuantity" />
-        </div>
+        <label class="field">
+          <span>Overall stock</span>
+          <input type="number" min="0" [(ngModel)]="formData.stockQuantity" name="stockQuantity" placeholder="0" />
+          <small>Automatically recalculated when size quantities change.</small>
+        </label>
 
-        <div class="form-group">
-          <label>Supplier</label>
-          <input type="text" [(ngModel)]="formData.supplier" name="supplier" />
-        </div>
+        <label class="field field-wide">
+          <span>Supplier</span>
+          <input type="text" [(ngModel)]="formData.supplier" name="supplier" placeholder="Supplier or quarry name" />
+        </label>
 
-        <div class="form-group">
-          <label>Description</label>
-          <textarea [(ngModel)]="formData.description" name="description"></textarea>
-        </div>
-      </div>
-
-      <div class="form-actions">
-        <button type="submit" class="btn btn-success">Save Stone</button>
-        <button type="button" (click)="cancelForm()" class="btn btn-secondary">Cancel</button>
+        <label class="field field-full">
+          <span>Description</span>
+          <textarea
+            [(ngModel)]="formData.description"
+            name="description"
+            placeholder="Finish, grade, origin or handling notes..."
+          ></textarea>
+        </label>
       </div>
 
       <div class="sizes-editor">
-        <h4>Size-wise Stock (for cutting availability)</h4>
-        <div class="size-row" *ngFor="let size of formData.sizes">
-          <span class="size-label">{{ size.dimension }} ({{ size.unit }})</span>
-          <input
-            type="number"
-            min="0"
-            [ngModel]="size.quantity"
-            (ngModelChange)="updateSizeQuantity(size.id, +$event)"
-            [ngModelOptions]="{ standalone: true }"
-            placeholder="Stock count"
-          />
+        <div class="sizes-heading">
+          <div>
+            <p class="section-kicker">SIZE-WISE STOCK</p>
+            <h3>Allocate available pieces</h3>
+            <p>These quantities power billing and cutting availability.</p>
+          </div>
+          <div class="size-total">
+            <span>Allocated</span>
+            <strong>{{ getFormStockTotal() }}</strong>
+            <small>pieces</small>
+          </div>
+        </div>
+
+        <div class="size-stock-grid">
+          <label class="size-stock-card" *ngFor="let size of formData.sizes; trackBy: trackSize">
+            <span>
+              <strong>{{ size.dimension }}</strong>
+              <small>{{ size.unit }}</small>
+            </span>
+            <input
+              type="number"
+              min="0"
+              [ngModel]="size.quantity"
+              (ngModelChange)="updateSizeQuantity(size.id, +$event)"
+              [ngModelOptions]="{ standalone: true }"
+              aria-label="Stock quantity for {{ size.dimension }}"
+            />
+          </label>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <p class="inline-error" *ngIf="formError" aria-live="polite">{{ formError }}</p>
+        <div class="form-actions">
+          <button type="button" class="button button-ghost" (click)="cancelForm()">Cancel</button>
+          <button type="submit" class="button button-dark">
+            {{ editingStoneId ? 'Save changes' : 'Add to inventory' }} <span aria-hidden="true">→</span>
+          </button>
         </div>
       </div>
     </form>
-  </div>
+  </section>
 
-  <div class="checker-section">
-    <h3>Cutting Availability Checker</h3>
-    <p>Check if requested size can be delivered directly or by cutting bigger stones.</p>
+  <section class="inventory-catalog">
+    <div class="catalog-header">
+      <div class="section-heading">
+        <div class="section-index">03</div>
+        <div>
+          <p class="section-kicker">MATERIAL LIBRARY</p>
+          <h2>Current inventory</h2>
+          <p>Search the yard, review quantities, and update individual materials.</p>
+        </div>
+      </div>
+      <button type="button" class="button button-dark" (click)="openForm()"><span aria-hidden="true">+</span> New material</button>
+    </div>
 
-    <div class="checker-grid">
-      <div class="form-group">
-        <label>Stone</label>
-        <select [(ngModel)]="checkStoneId">
-          <option value="">Select Stone</option>
-          <option *ngFor="let stone of stones$()" [value]="stone.id">{{ stone.name }} - {{ stone.type }}</option>
+    <div class="inventory-toolbar">
+      <label class="search-field">
+        <span aria-hidden="true">⌕</span>
+        <input type="search" [(ngModel)]="inventorySearch" placeholder="Search stone, color or supplier..." />
+      </label>
+
+      <label class="toolbar-select">
+        <span>Material</span>
+        <select [(ngModel)]="inventoryTypeFilter">
+          <option value="all">All types</option>
+          <option *ngFor="let type of stoneTypes" [value]="type">{{ type }}</option>
         </select>
-      </div>
+      </label>
 
-      <div class="form-group">
-        <label>Required Size (LxW)</label>
-        <input type="text" [(ngModel)]="checkSize" placeholder="Example: 3x2" />
-      </div>
+      <label class="toolbar-select">
+        <span>Stock status</span>
+        <select [(ngModel)]="inventoryStockFilter">
+          <option value="all">All stock</option>
+          <option value="healthy">In stock</option>
+          <option value="low">Low stock</option>
+          <option value="out">Out of stock</option>
+        </select>
+      </label>
 
-      <div class="form-group">
-        <label>Required Quantity</label>
-        <input type="number" min="1" [(ngModel)]="checkQuantity" />
-      </div>
+      <span class="result-count">{{ filteredStones.length }} result{{ filteredStones.length === 1 ? '' : 's' }}</span>
     </div>
 
-    <div class="checker-actions">
-      <button (click)="runAvailabilityCheck()" class="btn btn-primary">Check Availability</button>
-      <button (click)="clearAvailabilityCheck()" class="btn btn-secondary">Reset</button>
-    </div>
-
-    <div *ngIf="availabilityResult" class="checker-result">
-      <div *ngIf="!availabilityResult.isValidRequest" class="alert alert-warning">
-        Invalid request. Use size format like 3x2 and quantity greater than 0.
-      </div>
-
-      <div *ngIf="availabilityResult.isValidRequest">
-        <div class="result-status" [class.can-deliver]="availabilityResult.canDeliver" [class.cannot-deliver]="!availabilityResult.canDeliver">
-          {{ availabilityResult.canDeliver ? '✅ Can Deliver' : '❌ Cannot Deliver Fully' }}
+    <div class="stones-grid" *ngIf="filteredStones.length > 0; else noInventoryResults">
+      <article class="stone-card" *ngFor="let stone of filteredStones; trackBy: trackStone">
+        <div class="stone-visual" [style.background]="getStoneBackground(stone)">
+          <span class="material-chip">{{ stone.type }}</span>
+          <span
+            class="stock-pill"
+            [class.healthy]="getStockStatus(stone) === 'healthy'"
+            [class.low]="getStockStatus(stone) === 'low'"
+            [class.out]="getStockStatus(stone) === 'out'"
+          >
+            <i></i>{{ getStockStatusLabel(stone) }}
+          </span>
         </div>
 
-        <p><strong>Requested:</strong> {{ availabilityResult.requestedQuantity }} pieces of {{ availabilityResult.requestedSize }}</p>
-        <p><strong>Direct Available:</strong> {{ availabilityResult.directAvailable }}</p>
-        <p><strong>Total Possible (direct + cutting):</strong> {{ availabilityResult.totalPossible }}</p>
-        <p *ngIf="!availabilityResult.canDeliver"><strong>Shortage:</strong> {{ availabilityResult.shortage }}</p>
+        <div class="stone-card-body">
+          <div class="stone-title-row">
+            <div>
+              <h3>{{ stone.name }}</h3>
+              <p>{{ stone.color || 'Color not specified' }}</p>
+            </div>
+            <strong class="stone-rate">₹{{ stone.pricePerUnit }}<small>/ft²</small></strong>
+          </div>
 
-        <div class="cut-table" *ngIf="availabilityResult.suggestions.length > 0">
-          <h4>Suggested Cutting Plan</h4>
-          <table>
-            <thead>
-              <tr>
-                <th>Source Size</th>
-                <th>In Stock</th>
-                <th>Pieces per Source</th>
-                <th>Suggested to Cut</th>
-                <th>Possible Pieces</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let row of availabilityResult.suggestions">
-                <td>{{ row.sourceSize }}</td>
-                <td>{{ row.sourceCount }}</td>
-                <td>{{ row.piecesPerSource }}</td>
-                <td>{{ row.suggestedToCut }}</td>
-                <td>{{ row.possiblePieces }}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="stone-metrics">
+            <div><span>Stock</span><strong>{{ stone.stockQuantity }} <small>pcs</small></strong></div>
+            <div><span>Supplier</span><strong>{{ stone.supplier || 'Not assigned' }}</strong></div>
+          </div>
+
+          <p class="stone-description" *ngIf="stone.description">{{ stone.description }}</p>
+
+          <div class="size-summary">
+            <div class="size-summary-heading">
+              <span>Available sizes</span>
+              <small>{{ getStockedSizes(stone).length }} stocked</small>
+            </div>
+            <div class="size-tags" *ngIf="getStockedSizes(stone).length > 0; else noAllocatedSizes">
+              <span *ngFor="let size of getStockedSizes(stone) | slice:0:6">
+                <strong>{{ size.dimension }}</strong>{{ size.quantity }} pcs
+              </span>
+              <span class="more-sizes" *ngIf="getStockedSizes(stone).length > 6">
+                +{{ getStockedSizes(stone).length - 6 }} more
+              </span>
+            </div>
+            <ng-template #noAllocatedSizes>
+              <p class="no-sizes">No size allocation recorded yet.</p>
+            </ng-template>
+          </div>
         </div>
+
+        <footer class="stone-card-footer">
+          <span>Restocked {{ stone.lastRestocked | date:'mediumDate' }}</span>
+          <div>
+            <button type="button" (click)="editStone(stone)">Edit</button>
+            <button type="button" class="danger-action" (click)="deleteStone(stone.id)">Delete</button>
+          </div>
+        </footer>
+      </article>
+    </div>
+
+    <ng-template #noInventoryResults>
+      <div class="empty-state">
+        <span aria-hidden="true">◇</span>
+        <strong>No materials match these filters</strong>
+        <p>Clear the search or add a new material to inventory.</p>
+        <button type="button" class="button button-dark" (click)="openForm()">Add material</button>
+      </div>
+    </ng-template>
+  </section>
+
+  <section class="availability-panel">
+    <div class="section-heading">
+      <div class="section-index">04</div>
+      <div>
+        <p class="section-kicker">CUT PLANNING</p>
+        <h2>Availability checker</h2>
+        <p>Confirm whether an order can be supplied directly or cut from larger stock.</p>
       </div>
     </div>
-  </div>
 
-  <!-- Stones List -->
-  <div class="stones-grid">
-    <div *ngFor="let stone of stones$()" class="stone-card">
-      <div class="card-header">
-        <h4>{{ stone.name }}</h4>
-        <span class="badge" [class.low-stock]="stone.stockQuantity <= 20">
-          {{ stone.type }}
-        </span>
+    <div class="checker-workspace">
+      <div class="checker-controls">
+        <label class="field">
+          <span>Stone</span>
+          <select [(ngModel)]="checkStoneId">
+            <option value="">Select stone</option>
+            <option *ngFor="let stone of stones$()" [value]="stone.id">{{ stone.name }} · {{ stone.type }}</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Required size (L × W)</span>
+          <input type="text" [(ngModel)]="checkSize" placeholder="e.g. 3x2" />
+        </label>
+        <label class="field">
+          <span>Required quantity</span>
+          <input type="number" min="1" [(ngModel)]="checkQuantity" />
+        </label>
+        <div class="checker-actions">
+          <button type="button" class="button button-dark" (click)="runAvailabilityCheck()">Check stock</button>
+          <button type="button" class="button button-ghost" (click)="clearAvailabilityCheck()">Reset</button>
+        </div>
+        <p class="inline-error" *ngIf="checkerError" aria-live="polite">{{ checkerError }}</p>
       </div>
 
-      <div class="card-body">
-        <p><strong>Color:</strong> {{ stone.color }}</p>
-        <p><strong>Price:</strong> ₹{{ stone.pricePerUnit }}/unit</p>
-        <p><strong>Stock:</strong> {{ stone.stockQuantity }} units</p>
-        <p><strong>Supplier:</strong> {{ stone.supplier }}</p>
-        <p *ngIf="stone.description" class="description">{{ stone.description }}</p>
+      <div class="checker-result" *ngIf="availabilityResult; else checkerPlaceholder">
+        <div *ngIf="!availabilityResult.isValidRequest" class="result-banner unavailable">
+          <span>!</span>
+          <div><strong>Invalid request</strong><small>Use a dimension such as 3x2 and a quantity above zero.</small></div>
+        </div>
 
-        <div class="sizes">
-          <strong>Available Sizes:</strong>
-          <div class="size-list">
-            <span *ngFor="let size of stone.sizes" class="size-tag">
-              {{ size.dimension }}: {{ size.quantity }} pcs
-            </span>
+        <div *ngIf="availabilityResult.isValidRequest">
+          <div class="result-banner" [class.available]="availabilityResult.canDeliver" [class.unavailable]="!availabilityResult.canDeliver">
+            <span>{{ availabilityResult.canDeliver ? '✓' : '!' }}</span>
+            <div>
+              <strong>{{ availabilityResult.canDeliver ? 'Order can be fulfilled' : 'Stock is insufficient' }}</strong>
+              <small>{{ availabilityResult.requestedQuantity }} pieces · {{ availabilityResult.requestedSize }}</small>
+            </div>
+          </div>
+
+          <div class="result-metrics">
+            <div><span>Direct</span><strong>{{ availabilityResult.directAvailable }}</strong></div>
+            <div><span>Total possible</span><strong>{{ availabilityResult.totalPossible }}</strong></div>
+            <div><span>Shortage</span><strong>{{ availabilityResult.shortage }}</strong></div>
+          </div>
+
+          <div class="cut-table" *ngIf="availabilityResult.suggestions.length > 0">
+            <div class="cut-table-heading"><strong>Suggested cutting plan</strong><span>{{ availabilityResult.suggestions.length }} source sizes</span></div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr><th>Source</th><th>In stock</th><th>Yield</th><th>Cut</th><th>Possible</th></tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of availabilityResult.suggestions">
+                    <td><strong>{{ row.sourceSize }}</strong></td>
+                    <td>{{ row.sourceCount }}</td>
+                    <td>{{ row.piecesPerSource }}/source</td>
+                    <td>{{ row.suggestedToCut }}</td>
+                    <td>{{ row.possiblePieces }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="card-footer">
-        <button (click)="editStone(stone)" class="btn btn-sm btn-info">Edit</button>
-        <button (click)="deleteStone(stone.id)" class="btn btn-sm btn-danger">Delete</button>
-      </div>
+      <ng-template #checkerPlaceholder>
+        <div class="checker-placeholder">
+          <span aria-hidden="true">◇</span>
+          <strong>Ready to plan a cut</strong>
+          <p>Choose a material and required size to see direct stock and cutting options.</p>
+        </div>
+      </ng-template>
     </div>
-  </div>
-
-  <div *ngIf="(stones$() | slice: 0).length === 0" class="empty-state">
-    <p>No stones in inventory. Click "Add New Stone" to get started.</p>
-  </div>
+  </section>
 </div>

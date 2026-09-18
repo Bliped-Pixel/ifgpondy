@@ -1,4 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
+import { BillingService } from './billing.service';
 import { InventoryService } from './inventory.service';
 import {
   PurchaseEntry,
@@ -13,92 +14,72 @@ import {
   providedIn: 'root'
 })
 export class TransactionService {
-  private salesEntries = signal<SalesEntry[]>([]);
   private purchaseEntries = signal<PurchaseEntry[]>([]);
   private voucherEntries = signal<VoucherEntry[]>([]);
-  private salesCounter = signal(1000);
   private purchaseCounter = signal(2000);
   private voucherCounter = signal(3000);
 
-  salesEntries$ = this.salesEntries.asReadonly();
-  purchaseEntries$ = this.purchaseEntries.asReadonly();
-  voucherEntries$ = this.voucherEntries.asReadonly();
+  readonly salesEntries$ = computed<SalesEntry[]>(() =>
+    [...this.billingService.invoices$()]
+      .map(invoice => ({
+        id: `sale-${invoice.id}`,
+        sourceInvoiceId: invoice.id,
+        billNumber: invoice.invoiceNumber,
+        billType: invoice.billType,
+        paymentStatus: invoice.paymentStatus,
+        customerName: invoice.customerName,
+        salesDate: new Date(invoice.invoiceDate),
+        items: invoice.items.map(item => ({
+          id: item.id,
+          stoneId: item.stoneId,
+          stoneName: item.stoneName,
+          stoneType: item.stoneType,
+          size: item.size,
+          quantity: item.quantity,
+          squareFeet: item.squareFeet,
+          ratePerSqFt: item.pricePerUnit,
+          amount: item.totalAmount,
+          gstPercentage: item.gstPercentage,
+          gstAmount: item.gstAmount,
+          lineTotal: item.totalAmount + item.gstAmount
+        })),
+        subtotal: invoice.subtotal,
+        gstTotal: invoice.gstAmount,
+        discountPercentage: invoice.discount || 0,
+        discountAmount: (invoice.subtotal * (invoice.discount || 0)) / 100,
+        grandTotal: invoice.total,
+        notes: invoice.notes
+      }))
+      .sort((a, b) => b.salesDate.getTime() - a.salesDate.getTime())
+  );
 
-  constructor(private inventoryService: InventoryService) {}
+  readonly purchaseEntries$ = this.purchaseEntries.asReadonly();
+  readonly voucherEntries$ = this.voucherEntries.asReadonly();
 
-  createSalesEntry(
-    customerName: string,
-    items: TransactionItem[],
-    discountPercentage: number = 0,
-    notes?: string
-  ): TransactionResult<SalesEntry> {
-    if (!customerName.trim()) {
-      return { success: false, message: 'Customer name is required.' };
-    }
-
-    if (items.length === 0) {
-      return { success: false, message: 'Add at least one sales item.' };
-    }
-
-    for (const item of items) {
-      const stockResult = this.inventoryService.consumeStockWithCutting(
-        item.stoneId,
-        item.size,
-        item.quantity
-      );
-
-      if (!stockResult.success) {
-        return {
-          success: false,
-          message: `Stock update failed for ${item.stoneName} (${item.size}): ${stockResult.message}`
-        };
-      }
-    }
-
-    const subtotal = items.reduce((sum, item) => sum + item.amount, 0);
-    const gstTotal = items.reduce((sum, item) => sum + item.gstAmount, 0);
-    const discountAmount = (subtotal * discountPercentage) / 100;
-    const grandTotal = subtotal - discountAmount + gstTotal;
-
-    const entry: SalesEntry = {
-      id: Date.now().toString(),
-      billNumber: this.generateSalesNumber(),
-      customerName,
-      salesDate: new Date(),
-      items,
-      subtotal,
-      gstTotal,
-      discountPercentage,
-      discountAmount,
-      grandTotal,
-      notes
-    };
-
-    this.salesEntries.set([entry, ...this.salesEntries()]);
-    return { success: true, data: entry, message: 'Sales entry saved.' };
-  }
+  constructor(
+    private inventoryService: InventoryService,
+    private billingService: BillingService
+  ) {}
 
   createPurchaseEntry(
     supplierName: string,
     items: TransactionItem[],
-    notes?: string
+    notes?: string,
+    purchaseDate: Date = new Date()
   ): TransactionResult<PurchaseEntry> {
     if (!supplierName.trim()) {
-      return { success: false, message: 'Supplier name is required.' };
+      return { success: false, message: 'Supplier name is required for a purchase record.' };
     }
 
     if (items.length === 0) {
       return { success: false, message: 'Add at least one purchase item.' };
     }
 
-    for (const item of items) {
-      const stockResult = this.inventoryService.addSizeStock(item.stoneId, item.size, item.quantity);
-      if (!stockResult.success) {
-        return {
-          success: false,
-          message: `Stock update failed for ${item.stoneName} (${item.size}): ${stockResult.message}`
-        };
-      }
+    const stockResult = this.inventoryService.addStockBatch(
+      items.map(item => ({ stoneId: item.stoneId, size: item.size, quantity: item.quantity }))
+    );
+    if (!stockResult.success) {
+      return { success: false, message: `Stock update failed: ${stockResult.message}` };
     }
 
     const subtotal = items.reduce((sum, item) => sum + item.amount, 0);
@@ -106,25 +87,34 @@ export class TransactionService {
     const grandTotal = subtotal + gstTotal;
 
     const entry: PurchaseEntry = {
-      id: Date.now().toString(),
+      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
       purchaseNumber: this.generatePurchaseNumber(),
-      supplierName,
-      purchaseDate: new Date(),
-      items,
+      supplierName: supplierName.trim(),
+      purchaseDate,
+      items: items.map(item => ({ ...item })),
       subtotal,
       gstTotal,
       grandTotal,
-      notes
+      notes: notes?.trim() || undefined
     };
 
     this.purchaseEntries.set([entry, ...this.purchaseEntries()]);
-    return { success: true, data: entry, message: 'Purchase entry saved.' };
+    return { success: true, data: entry, message: 'Purchase recorded and stock updated.' };
   }
 
-  private generateSalesNumber(): string {
-    const current = this.salesCounter();
-    this.salesCounter.set(current + 1);
-    return `SE-${new Date().getFullYear()}-${current}`;
+  applyStockRefill(items: TransactionItem[]): TransactionResult<undefined> {
+    if (items.length === 0) {
+      return { success: false, message: 'Add at least one refill item.' };
+    }
+
+    const stockResult = this.inventoryService.addStockBatch(
+      items.map(item => ({ stoneId: item.stoneId, size: item.size, quantity: item.quantity }))
+    );
+
+    return {
+      success: stockResult.success,
+      message: stockResult.success ? 'Minor stock refill applied without a purchase posting.' : stockResult.message
+    };
   }
 
   private generatePurchaseNumber(): string {

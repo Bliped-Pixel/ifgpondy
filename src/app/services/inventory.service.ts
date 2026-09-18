@@ -25,6 +25,19 @@ export interface StockMutationResult {
   message: string;
 }
 
+export interface StockRequest {
+  stoneId: string;
+  size: string;
+  quantity: number;
+}
+
+function createStockedSizes(quantities: number[]): Stone['sizes'] {
+  return PRESET_SIZES.map((size, index) => ({
+    ...size,
+    quantity: Math.max(0, Math.floor(quantities[index] || 0))
+  }));
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,7 +50,7 @@ export class InventoryService {
       color: 'Black',
       pricePerUnit: 500,
       stockQuantity: 100,
-      sizes: [...PRESET_SIZES],
+      sizes: createStockedSizes([25, 20, 15, 10, 8, 10, 7, 3, 1, 1]),
       lastRestocked: new Date('2024-01-15'),
       supplier: 'XYZ Suppliers',
       description: 'High quality black granite tiles'
@@ -49,7 +62,7 @@ export class InventoryService {
       color: 'Red',
       pricePerUnit: 550,
       stockQuantity: 80,
-      sizes: [...PRESET_SIZES],
+      sizes: createStockedSizes([20, 15, 12, 8, 7, 7, 5, 3, 2, 1]),
       lastRestocked: new Date('2024-01-20'),
       supplier: 'ABC Quarries',
       description: 'Premium red granite with natural finish'
@@ -61,7 +74,7 @@ export class InventoryService {
       color: 'White',
       pricePerUnit: 600,
       stockQuantity: 50,
-      sizes: [...PRESET_SIZES],
+      sizes: createStockedSizes([12, 10, 8, 5, 4, 4, 3, 2, 1, 1]),
       lastRestocked: new Date('2024-02-01'),
       supplier: 'XYZ Suppliers',
       description: 'Elegant white marble for premium projects'
@@ -205,24 +218,75 @@ export class InventoryService {
       return { success: false, message: 'Stone not found.' };
     }
 
-    if (quantity <= 0) {
+    const normalizedQuantity = Math.floor(Number(quantity));
+    if (!Number.isFinite(normalizedQuantity) || normalizedQuantity <= 0) {
       return { success: false, message: 'Quantity must be greater than zero.' };
     }
 
-    const updatedStone: Stone = {
-      ...stone,
-      sizes: stone.sizes.map(size =>
-        size.dimension.toLowerCase().trim() === normalizedDimension
-          ? { ...size, quantity: size.quantity + quantity }
-          : { ...size }
-      )
-    };
+    if (!this.isValidDimension(normalizedDimension)) {
+      return { success: false, message: 'Invalid stock dimension.' };
+    }
+
+    let matchedSize = false;
+    const updatedSizes = stone.sizes.map(size => {
+      if (size.dimension.toLowerCase().trim() !== normalizedDimension) {
+        return { ...size };
+      }
+
+      matchedSize = true;
+      return { ...size, quantity: size.quantity + normalizedQuantity };
+    });
+
+    if (!matchedSize) {
+      updatedSizes.push({
+        id: `${stoneId}-${normalizedDimension}-${Date.now()}`,
+        dimension: sizeDimension.trim(),
+        quantity: normalizedQuantity,
+        unit: 'pieces'
+      });
+    }
+
+    const updatedStone: Stone = { ...stone, sizes: updatedSizes };
 
     updatedStone.stockQuantity = this.calculateTotalStock(updatedStone);
     updatedStone.lastRestocked = new Date();
     this.updateStone(updatedStone);
 
     return { success: true, message: 'Stock added successfully.' };
+  }
+
+  addStockBatch(requests: StockRequest[]): StockMutationResult {
+    if (requests.length === 0) {
+      return { success: false, message: 'Add at least one stock item.' };
+    }
+
+    const snapshots = this.createStoneSnapshots(requests);
+    for (const request of requests) {
+      const result = this.addSizeStock(request.stoneId, request.size, request.quantity);
+      if (!result.success) {
+        this.restoreStoneSnapshots(snapshots);
+        return result;
+      }
+    }
+
+    return { success: true, message: 'Stock refill applied.' };
+  }
+
+  consumeStockBatch(requests: StockRequest[]): StockMutationResult {
+    if (requests.length === 0) {
+      return { success: false, message: 'Add at least one sale item.' };
+    }
+
+    const snapshots = this.createStoneSnapshots(requests);
+    for (const request of requests) {
+      const result = this.consumeStockWithCutting(request.stoneId, request.size, request.quantity);
+      if (!result.success) {
+        this.restoreStoneSnapshots(snapshots);
+        return result;
+      }
+    }
+
+    return { success: true, message: 'Sale stock allocated.' };
   }
 
   consumeStockWithCutting(
@@ -249,7 +313,7 @@ export class InventoryService {
 
     const updatedSizes = stone.sizes.map(size => ({ ...size }));
     const targetDimension = requestedSize.trim().toLowerCase();
-    const targetSize = updatedSizes.find(
+    let targetSize = updatedSizes.find(
       size => size.dimension.toLowerCase().trim() === targetDimension
     );
 
@@ -274,7 +338,23 @@ export class InventoryService {
 
       const cutCount = Math.min(sourceSize.quantity, suggestion.suggestedToCut);
       sourceSize.quantity -= cutCount;
-      remaining -= cutCount * suggestion.piecesPerSource;
+      const producedPieces = cutCount * suggestion.piecesPerSource;
+      const piecesUsed = Math.min(remaining, producedPieces);
+      const surplusPieces = producedPieces - piecesUsed;
+      remaining -= piecesUsed;
+
+      if (surplusPieces > 0) {
+        if (!targetSize) {
+          targetSize = {
+            id: `${stoneId}-${targetDimension}-${Date.now()}`,
+            dimension: requestedSize.trim(),
+            quantity: 0,
+            unit: 'pieces'
+          };
+          updatedSizes.push(targetSize);
+        }
+        targetSize.quantity += surplusPieces;
+      }
     }
 
     if (remaining > 0) {
@@ -293,6 +373,27 @@ export class InventoryService {
 
   private calculateTotalStock(stone: Stone): number {
     return stone.sizes.reduce((sum, size) => sum + size.quantity, 0);
+  }
+
+  private createStoneSnapshots(requests: StockRequest[]): Map<string, Stone> {
+    const snapshots = new Map<string, Stone>();
+
+    requests.forEach(request => {
+      if (snapshots.has(request.stoneId)) return;
+      const stone = this.getStone(request.stoneId);
+      if (stone) {
+        snapshots.set(request.stoneId, {
+          ...stone,
+          sizes: stone.sizes.map(size => ({ ...size }))
+        });
+      }
+    });
+
+    return snapshots;
+  }
+
+  private restoreStoneSnapshots(snapshots: Map<string, Stone>): void {
+    snapshots.forEach(stone => this.updateStone(stone));
   }
 
   private getPiecesPerSource(sourceSize: string, requestedSize: string): number {

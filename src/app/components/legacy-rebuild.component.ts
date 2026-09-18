@@ -409,14 +409,14 @@ export class LegacyRebuildComponent {
       id: 'receipt',
       label: 'Receipt Voucher',
       legacyForm: 'receipt_form',
-      route: '/vouchers',
+      route: '/accounts',
       description: 'Create customer receipts and post to ledger.'
     },
     {
       id: 'payment',
       label: 'Payment Voucher',
       legacyForm: 'payment_form',
-      route: '/vouchers',
+      route: '/accounts',
       description: 'Create supplier and expense payments with mode tracking.'
     },
     {
